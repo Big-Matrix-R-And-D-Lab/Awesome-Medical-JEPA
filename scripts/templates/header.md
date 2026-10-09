@@ -33,11 +33,11 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 ## How to read this list
 
-| Tag | Inclusion type | Meaning |
-| :---: | --- | --- |
-| | **Direct Medical JEPA** | Applies or extends a JEPA objective on medical or biomedical data. |
-| 🔸 | **JEPA-inspired Medical** | Adapts JEPA ideas (e.g. latent feature prediction) without being a named JEPA, or benchmarks JEPA against other objectives. |
-| | **Foundational JEPA** | General-domain architectures and theory that medical JEPA work builds on. |
+| Inclusion type | Meaning | How it appears below |
+| --- | --- | --- |
+| **Direct Medical JEPA** | Applies or extends a JEPA objective on medical or biomedical data. | Model name only |
+| **JEPA-inspired Medical** | Adapts JEPA ideas (e.g. latent feature prediction) without being a named JEPA, or benchmarks JEPA against other objectives. | 🔸 after the model name |
+| **Foundational JEPA** | General-domain architectures and theory that medical JEPA work builds on. | Listed under [Foundations](#-foundations) |
 
 > [!NOTE]
 > The **Code** column links only to **official** implementations released by the authors, with live GitHub stars. Third-party re-implementations are deliberately not listed, and `—` means no official code was located at curation time. Venues shown as *arXiv* or *bioRxiv* are preprints that have not (yet) been peer reviewed.

@@ -36,6 +36,7 @@ SECTION_ORDER = [
     "Medical Imaging > Cardiac Imaging",
     "Medical Imaging > Ultrasound",
     "Medical Imaging > Computational Pathology",
+    "Medical Imaging > Multi-modality Imaging",
     "Surgical Video",
     "Physiological Signals",
     "Physiological Signals > ECG",
@@ -43,6 +44,9 @@ SECTION_ORDER = [
     "Physiological Signals > Multimodal & ICU Monitoring",
     "EHR & Clinical Trajectories",
     "Molecular & Single-Cell Biology",
+    "Molecular & Single-Cell Biology > Single-Cell Transcriptomics",
+    "Molecular & Single-Cell Biology > Spatial Omics",
+    "Molecular & Single-Cell Biology > Genomics & Proteins",
 ]
 
 # Icon shown before each top-level area heading. Areas without one get a plain heading.
