@@ -7,8 +7,8 @@
 # Awesome Medical JEPA
 
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
-[![Papers](https://img.shields.io/badge/papers-43-0d9488?style=flat-square)](#contents)
-[![Official code](https://img.shields.io/badge/official%20code-16-2ea44f?style=flat-square&logo=github)](#how-to-read-this-list)
+[![Papers](https://img.shields.io/badge/papers-56-0d9488?style=flat-square)](#contents)
+[![Official code](https://img.shields.io/badge/official%20code-22-2ea44f?style=flat-square&logo=github)](#how-to-read-this-list)
 [![Last commit](https://img.shields.io/github/last-commit/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA?style=flat-square&label=updated&color=6e40c9)](../../commits/main)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](CONTRIBUTING.md)
 [![License: CC0-1.0](https://img.shields.io/badge/license-CC0--1.0-64748b?style=flat-square)](LICENSE)
@@ -35,36 +35,36 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 ## How to read this list
 
-| Tag | Inclusion type | Meaning |
-| :---: | --- | --- |
-| | **Direct Medical JEPA** | Applies or extends a JEPA objective on medical or biomedical data. |
-| 🔸 | **JEPA-inspired Medical** | Adapts JEPA ideas (e.g. latent feature prediction) without being a named JEPA, or benchmarks JEPA against other objectives. |
-| | **Foundational JEPA** | General-domain architectures and theory that medical JEPA work builds on. |
+| Inclusion type | Meaning | How it appears below |
+| --- | --- | --- |
+| **Direct Medical JEPA** | Applies or extends a JEPA objective on medical or biomedical data. | Model name only |
+| **JEPA-inspired Medical** | Adapts JEPA ideas (e.g. latent feature prediction) without being a named JEPA, or benchmarks JEPA against other objectives. | 🔸 after the model name |
+| **Foundational JEPA** | General-domain architectures and theory that medical JEPA work builds on. | Listed under [Foundations](#-foundations) |
 
 > [!NOTE]
 > The **Code** column links only to **official** implementations released by the authors, with live GitHub stars. Third-party re-implementations are deliberately not listed, and `—` means no official code was located at curation time. Venues shown as *arXiv* or *bioRxiv* are preprints that have not (yet) been peer reviewed.
 
 ## At a glance
 
-**43** papers &nbsp;·&nbsp; **16** with official code &nbsp;·&nbsp; **6** research areas
+**56** papers &nbsp;·&nbsp; **22** with official code &nbsp;·&nbsp; **6** research areas
 
 | Year | Papers | |
 | :-- | --: | :-- |
 | 2023 | 1 | █ |
-| 2024 | 5 | ████ |
-| 2025 | 7 | ██████ |
-| 2026 | 30 | ████████████████████████ |
+| 2024 | 5 | ███ |
+| 2025 | 7 | ████ |
+| 2026 | 43 | ████████████████████████ |
 
 ## Contents
 
 | | Area | Papers | Sections |
 | :-: | :-- | :-: | :-- |
 | 🧱 | **[Foundations](#-foundations)** | 5 | [Architectures](#architectures)&nbsp;<sub>3</sub> · [Theory & Objectives](#theory--objectives)&nbsp;<sub>2</sub> |
-| 🩻 | **[Medical Imaging](#-medical-imaging)** | 18 | [Radiology](#radiology)&nbsp;<sub>4</sub> · [Neuroimaging](#neuroimaging)&nbsp;<sub>8</sub> · [Cardiac Imaging](#cardiac-imaging)&nbsp;<sub>2</sub> · [Ultrasound](#ultrasound)&nbsp;<sub>3</sub> · [Computational Pathology](#computational-pathology)&nbsp;<sub>1</sub> |
+| 🩻 | **[Medical Imaging](#-medical-imaging)** | 21 | [Radiology](#radiology)&nbsp;<sub>5</sub> · [Neuroimaging](#neuroimaging)&nbsp;<sub>8</sub> · [Cardiac Imaging](#cardiac-imaging)&nbsp;<sub>2</sub> · [Ultrasound](#ultrasound)&nbsp;<sub>3</sub> · [Computational Pathology](#computational-pathology)&nbsp;<sub>1</sub> · [Multi-modality Imaging](#multi-modality-imaging)&nbsp;<sub>2</sub> |
 | 🎥 | **[Surgical Video](#-surgical-video)** | 2 | — |
-| 💓 | **[Physiological Signals](#-physiological-signals)** | 13 | [ECG](#ecg)&nbsp;<sub>4</sub> · [EEG](#eeg)&nbsp;<sub>4</sub> · [Multimodal & ICU Monitoring](#multimodal--icu-monitoring)&nbsp;<sub>5</sub> |
+| 💓 | **[Physiological Signals](#-physiological-signals)** | 17 | [ECG](#ecg)&nbsp;<sub>4</sub> · [EEG](#eeg)&nbsp;<sub>6</sub> · [Multimodal & ICU Monitoring](#multimodal--icu-monitoring)&nbsp;<sub>7</sub> |
 | 📋 | **[EHR & Clinical Trajectories](#-ehr--clinical-trajectories)** | 2 | — |
-| 🧬 | **[Molecular & Single-Cell Biology](#-molecular--single-cell-biology)** | 3 | — |
+| 🧬 | **[Molecular & Single-Cell Biology](#-molecular--single-cell-biology)** | 9 | [Single-Cell Transcriptomics](#single-cell-transcriptomics)&nbsp;<sub>3</sub> · [Spatial Omics](#spatial-omics)&nbsp;<sub>4</sub> · [Genomics & Proteins](#genomics--proteins)&nbsp;<sub>2</sub> |
 
 ## 🧱 Foundations
 
@@ -96,6 +96,7 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 | **AEGIS** | [AEGIS: A Multi-Task Joint-Embedding Predictive Architecture for Mammography](https://arxiv.org/abs/2607.00277)<br><sub><code>Mammography</code> Breast cancer detection and density assessment</sub> | arXiv<br><sub>2026</sub> | — |
 | **Rad‑JEPA&nbsp;3D** | [Rad-JEPA 3D: Radiology Joint-Embedding Predictive Model for 3D Computed Tomography](https://arxiv.org/abs/2607.26196)<br><sub><code>3D CT</code> Volumetric radiology representation learning</sub> | arXiv<br><sub>2026</sub> | — |
 | **RadJEPA** | [RadJEPA: Radiology Encoder for Chest X-Rays via Joint Embedding Predictive Architecture](https://arxiv.org/abs/2601.15891)<br><sub><code>Chest X-ray</code> Radiology report generation and transfer classification/segmentation</sub> | EMNLP<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/aidelab-iitbombay/RadJEPA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/aidelab-iitbombay/RadJEPA) |
+| **Seg‑JEPA** | [Seg-JEPA: Joint-Embedding Predictive Architecture for Self-Supervised Medical Image Segmentation](https://link.springer.com/chapter/10.1007/978-981-92-0068-9_7)<br><sub><code>Chest X-ray</code> Self-supervised pretraining and label-efficient segmentation of medical images</sub> | ACIIDS<br><sub>2026</sub> | — |
 | **Multimodal imaging–clinical JEPA** | [Self-Supervised Learning of Imaging and Clinical Signatures Using a Multimodal Joint-Embedding Predictive Architecture](https://arxiv.org/abs/2509.15470)<br><sub><code>CT + longitudinal EHR</code> Nodule diagnosis / multimodal clinical prediction</sub> | arXiv<br><sub>2025</sub> | — |
 
 <p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
@@ -142,6 +143,15 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 <p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
 
+### Multi-modality Imaging
+
+| Model | Paper | Venue | Code |
+| :-- | :-- | :-: | :-: |
+| **FS‑JEPA** | [Predicting Functions, Not Features: KANs with Function-Space Joint-Embedding Predictive Learning for Medical Image Segmentation](https://arxiv.org/abs/2608.12050)<br><sub><code>Medical images</code> Function-space predictive auxiliary objective for supervised segmentation; five benchmark datasets</sub> | arXiv<br><sub>2026</sub> | — |
+| **I-JEPA; compared with MAE and DINOv3** | [Pretext Matters: An Empirical Study of SSL Methods in Medical Imaging](https://arxiv.org/abs/2603.22649)<br><sub><code>Ultrasound; histopathology whole-slide images</code> Compare representation quality on clinical classification tasks; linear probing for ultrasound and attention-based MIL for histopathology</sub> | arXiv<br><sub>2026</sub> | — |
+
+<p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
+
 ## 🎥 Surgical Video
 
 | Model | Paper | Venue | Code |
@@ -168,8 +178,10 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 | Model | Paper | Venue | Code |
 | :-- | :-- | :-: | :-: |
+| **EEG-FM-Masking configurations** | [What masking geometry works best for EEG foundation models?](https://arxiv.org/abs/2609.33487)<br><sub><code>EEG</code> Compare masking strategies for JEPA and MAE pretraining; frozen linear-probe evaluation on 12 OpenEEGBench datasets</sub> | arXiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/PierreGtch/eeg-fm-masking?style=flat-square&logo=github&label=&color=24292f)](https://github.com/PierreGtch/eeg-fm-masking) |
 | **EEG‑JEPA** | [EEG-JEPA: Structured Latent Prediction for EEG Foundation Models](https://arxiv.org/abs/2608.00114)<br><sub><code>EEG</code> EEG foundation representation learning</sub> | arXiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/SWF-hao/EEG-JEPA-official?style=flat-square&logo=github&label=&color=24292f)](https://github.com/SWF-hao/EEG-JEPA-official) |
 | **Laya** | [Laya: A LeJEPA Approach to EEG via Latent Prediction over Reconstruction](https://arxiv.org/abs/2603.16281)<br><sub><code>EEG</code> EEG representation learning and transfer</sub> | arXiv<br><sub>2026</sub> | — |
+| **Multimodal EEG World Model** 🔸 | [Multimodal EEG World Model: Self-Supervised Latent Transition Learning for Wearable EEG Seizure Detection](https://www.medrxiv.org/content/10.64898/2026.07.20.26358450v1)<br><sub><code>EEG, ECG, EMG and movement signals</code> Predict next-segment EEG latent conditioned on synchronized ECG/EMG/movement representations; downstream seizure detection</sub> | medRxiv<br><sub>2026</sub> | — |
 | **STST‑JEPA** | [STST-JEPA: Shallow-Target Spatio-Temporal Joint Embedding Prediction Architecture for EEG Self-Supervised Learning](https://arxiv.org/abs/2607.06629)<br><sub><code>EEG</code> Self-supervised EEG representation learning</sub> | arXiv<br><sub>2026</sub> | — |
 | **EEG‑VJEPA** | [From Video to EEG: Adapting Joint Embedding Predictive Architecture to Uncover Spatiotemporal Dynamics in Brain Signal Analysis](https://arxiv.org/abs/2507.03633)<br><sub><code>Multichannel EEG</code> EEG classification and interpretable spatiotemporal representations</sub> | arXiv<br><sub>2025</sub> | — |
 
@@ -182,8 +194,10 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 | **Cardiac dynamics JEPA** | [Beyond Patient Invariance: Learning Cardiac Dynamics via Action-Conditioned JEPAs](https://arxiv.org/abs/2604.22618)<br><sub><code>Physiological/cardiac signals</code> Action-conditioned prediction of cardiac state dynamics</sub> | ICLR Workshop<br><sub>2026</sub> | — |
 | **CardioState‑JEPA** | [CardioState-JEPA: Delay-Aware Cross-Modal Learning of a Shared Cardiac Representation](https://arxiv.org/abs/2608.12944)<br><sub><code>ECG + PPG + PCG</code> Cross-modal shared cardiac representation</sub> | arXiv<br><sub>2026</sub> | — |
 | **ECG–PPG&nbsp;JEPA** | [Bridging ECG and PPG: Latent-Space Prediction for Robust Physiological Analysis](https://doi.org/10.1145/3770855.3819000)<br><sub><code>ECG + PPG</code> Robust cross-modal physiological analysis via latent prediction</sub> | KDD<br><sub>2026</sub> | — |
+| **Phenomenon-Graph JEPA** | [Phenomenon-Graph JEPA: Label-Efficient Representation Learning for Contactless Cardiorespiratory Sensing](https://arxiv.org/abs/2609.32928)<br><sub><code>Time-series from mmWave radar and RGB-D camera streams</code> Predictive representation pretraining; breathing-activity and body-pose classification</sub> | arXiv<br><sub>2026</sub> | — |
 | **Physio-JEPA for ICU Signals** | [Physio-JEPA for ICU Signals: Temporal Multimodal Explainability and the Temporal Range Coherence Metric for Ventricular Tachycardia Alarm Validation](https://doi.org/10.1109/NeuroNT71829.2026.11650778)<br><sub><code>Multimodal ICU signals</code> Ventricular tachycardia alarm validation and explainability</sub> | IEEE NeuroNT<br><sub>2026</sub> | — |
 | **PhysioJEPA** | [PhysioJEPA: Joint Embedding Representations of Physiological Signals for Real Time Risk Estimation in the Intensive Care Unit](https://proceedings.mlr.press/v297/fox26a.html)<br><sub><code>Arterial blood pressure, ECG lead II, PPG</code> Short-horizon hypotension and shock-index risk estimation</sub> | ML4H<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/benmfox/PhysioJEPA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/benmfox/PhysioJEPA) |
+| **SleepJEPA** | [SleepJEPA: Learning the latent world of sleep with at-home sleep data to estimate disease risk](https://www.medrxiv.org/content/10.64898/2026.03.20.26348834v3)<br><sub><code>Multichannel at-home polysomnography (EEG, EOG, EMG and other physiological signals)</code> Sleep representation learning; sleep-stage/sleepiness prediction and long-term disease-risk estimation</sub> | medRxiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/benmfox/SleepJEPA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/benmfox/SleepJEPA) |
 
 <p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
 
@@ -198,11 +212,33 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 ## 🧬 Molecular & Single-Cell Biology
 
+### Single-Cell Transcriptomics
+
 | Model | Paper | Venue | Code |
 | :-- | :-- | :-: | :-: |
 | **BioM‑JEPA** | [BioM-JEPA: Joint-Embedding Prediction of Graph-Connected Gene Blocks in Single Cells](https://arxiv.org/abs/2608.05928)<br><sub><code>Single-cell transcriptomics</code> Gene-block and cell-state representation learning</sub> | arXiv<br><sub>2026</sub> | — |
 | **Cell‑JEPA** | [Cell-JEPA: Latent Representation Learning for Single-Cell Transcriptomics](https://arxiv.org/abs/2602.02093)<br><sub><code>Single-cell transcriptomics</code> Cell-type representation, clustering and perturbation prediction</sub> | arXiv<br><sub>2026</sub> | — |
 | **GeneJEPA** | [GeneJEPA: A Predictive World Model of the Transcriptome](https://www.biorxiv.org/content/10.1101/2025.10.14.682378v1)<br><sub><code>Single-cell RNA-seq</code> Cell-state representation, drug-response and perturbation prediction</sub> | bioRxiv<br><sub>2025</sub> | [![GitHub stars](https://img.shields.io/github/stars/BiostateAI/GeneJEPA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/BiostateAI/GeneJEPA) |
+
+<p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
+
+### Spatial Omics
+
+| Model | Paper | Venue | Code |
+| :-- | :-- | :-: | :-: |
+| **CellWorld** | [CellWorld: From Gene-Level Reconstruction to Latent Cell Prediction in Spatial Transcriptomics Foundation Models](https://arxiv.org/abs/2608.06659)<br><sub><code>Spatial gene-expression profiles, coordinates, organ and platform metadata</code> Predict latent representations of masked cells from visible spatial context; cell annotation, tissue-region prediction and niche-composition regression</sub> | arXiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/UoM-HealthAI/CellWorld?style=flat-square&logo=github&label=&color=24292f)](https://github.com/UoM-HealthAI/CellWorld) |
+| **SpatialJEPA** 🔸 | [SpatialJEPA: JEPA-inspired graph-context distillation for spatially aware multiomics integration](https://www.biorxiv.org/content/10.64898/2026.07.21.739810v1)<br><sub><code>Paired RNA-ATAC multiomics with spatial-neighborhood graph</code> Transfer spatial context to dissociated single-cell multiome data; align source/target and recover spatially organized programs</sub> | bioRxiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/li-lab-mcgill/SpatialJEPA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/li-lab-mcgill/SpatialJEPA) |
+| **ST‑JEPA** | [ST-JEPA: Joint-Embedding Predictive Architecture for Spatial Transcriptomics](https://icml.cc/virtual/2026/71697)<br><sub><code>Spatial gene-expression measurements with cell spatial coordinates</code> Hierarchical cell, gene and neighborhood representation pretraining for niche identification and batch integration</sub> | ICML Workshop<br><sub>2026</sub> | — |
+| **TERRA (Tissue Environment Relational Representation Architecture)** | [Multi-scale modeling of human tissues from spatial transcriptomics with TERRA](https://www.biorxiv.org/content/10.64898/2026.07.29.741565v1)<br><sub><code>Imaging-based spatial transcriptomics; gene expression with spatial cell-neighborhood context</code> Self-supervised gene/cell/neighborhood representations; spatial niche analysis, atlasing and in-silico perturbation</sub> | bioRxiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/Lotfollahi-lab/terra?style=flat-square&logo=github&label=&color=24292f)](https://github.com/Lotfollahi-lab/terra) |
+
+<p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
+
+### Genomics & Proteins
+
+| Model | Paper | Venue | Code |
+| :-- | :-- | :-: | :-: |
+| **JEPA‑DNA** | [JEPA-DNA: Grounding Genomic Foundation Models through Joint-Embedding Predictive Architectures](https://arxiv.org/abs/2602.17162)<br><sub><code>DNA nucleotide sequences / genomic sequence embeddings</code> Genomic latent grounding; benchmark evaluations including reference-versus-variant effect prediction</sub> | arXiv<br><sub>2026</sub> | [![GitHub stars](https://img.shields.io/github/stars/NVIDIA-BioNeMo/JEPA-DNA?style=flat-square&logo=github&label=&color=24292f)](https://github.com/NVIDIA-BioNeMo/JEPA-DNA) |
+| **ProtJEPA** | [ProtJEPA: A Multimodal Joint-Embedding Predictive Architecture for Protein Biological World Modeling with Multi-Teacher Modality-Attentive Fusion](https://www.biorxiv.org/content/10.64898/2026.08.03.742606v1)<br><sub><code>Protein sequence student predicts joint teacher targets from multiple protein-related modalities</code> Predict multimodal biological-context latents; evaluate annotation, enzyme classification, localization, drug-target interaction and disorder prediction</sub> | bioRxiv<br><sub>2026</sub> | — |
 
 <p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
 
