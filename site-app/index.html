@@ -15,9 +15,68 @@
         var dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
         if (dark) document.documentElement.classList.add("dark");
       } catch (e) {}
+
+      // Boot loader. Only runs when JavaScript runs, so crawlers and agents that read the raw HTML
+      // never see it and get the plain paper list inside #root instead. The app calls
+      // __amjBootDone() once it has rendered; the timeout is a safety net if the app fails.
+      document.documentElement.classList.add("boot");
+      window.__amjBootDone = function () {
+        var h = document.documentElement;
+        if (!h.classList.contains("boot")) return;
+        h.classList.remove("boot");
+        var b = document.getElementById("boot");
+        if (b) {
+          b.classList.add("out");
+          setTimeout(function () { b.remove(); }, 450);
+        }
+      };
+      setTimeout(function () { window.__amjBootDone(); }, 8000);
     </script>
+    <style>
+      #boot { display: none; }
+      .boot #boot, #boot.out {
+        position: fixed; inset: 0; z-index: 100;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+        background: hsl(var(--background, 160 18% 98.5%));
+        transition: opacity 0.4s ease;
+      }
+      #boot.out { opacity: 0; pointer-events: none; }
+      .boot body { overflow: hidden; }
+      .boot #root { visibility: hidden; }
+
+      .boot-grid { display: grid; grid-template-columns: repeat(5, 14px); gap: 4px; }
+      .boot-grid i { width: 14px; height: 14px; border-radius: 3px; background: hsl(var(--patch, 170 12% 90%)); }
+      .boot-grid i.c { background: hsl(var(--primary, 173 70% 27%)); }
+      .boot-grid i.t {
+        background: transparent;
+        outline: 1.5px dashed hsl(var(--target, 8 76% 56%)); outline-offset: -1.5px;
+        animation: amj-predict 1.8s ease-in-out infinite;
+      }
+      .boot-grid i.d1 { animation-delay: 0.12s; } .boot-grid i.d2 { animation-delay: 0.24s; }
+      .boot-grid i.d3 { animation-delay: 0.36s; } .boot-grid i.d4 { animation-delay: 0.48s; }
+      .boot-grid i.d5 { animation-delay: 0.6s; }  .boot-grid i.d6 { animation-delay: 0.72s; }
+      .boot-grid i.d7 { animation-delay: 0.84s; }
+      @keyframes amj-predict {
+        0%, 15% { background: transparent; }
+        45%, 70% { background: hsl(var(--target, 8 76% 56%)); }
+        100% { background: transparent; }
+      }
+      .boot-name { margin: 0; font: 600 15px/1.2 "Instrument Sans", "Segoe UI", system-ui, sans-serif; color: hsl(var(--foreground, 170 24% 11%)); letter-spacing: -0.01em; }
+      .boot-msg { margin: -10px 0 0; font: 400 12px/1.4 "JetBrains Mono", ui-monospace, Consolas, monospace; color: hsl(var(--muted-foreground, 170 10% 40%)); }
+      .boot-bar { width: 132px; height: 2px; border-radius: 2px; overflow: hidden; background: hsl(var(--border, 170 12% 88%)); }
+      .boot-bar span { display: block; width: 40%; height: 100%; background: hsl(var(--primary, 173 70% 27%)); animation: amj-bar 1.2s ease-in-out infinite; }
+      @keyframes amj-bar { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-grid i.t { animation: none; background: hsl(var(--target, 8 76% 56%)); }
+        .boot-bar span { animation: none; width: 100%; }
+      }
+    </style>
   </head>
   <body>
+    <script>
+      // Inserted by script (not static markup) so the raw HTML that crawlers read has no loader text.
+      document.body.insertAdjacentHTML("afterbegin", '<div id="boot" role="status" aria-label="Loading Awesome Medical JEPA"><div class="boot-grid" aria-hidden="true"><i class="c"></i><i class="c"></i><i class="c"></i><i></i><i class="t d0"></i><i class="c"></i><i class="t d1"></i><i class="t d2"></i><i class="c"></i><i class="t d3"></i><i class="c"></i><i class="t d4"></i><i class="t d5"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i></i><i></i><i class="c"></i><i class="t d6"></i><i class="t d7"></i><i class="c"></i></div><p class="boot-name">Awesome Medical JEPA</p><p class="boot-msg">Loading papers…</p><div class="boot-bar" aria-hidden="true"><span></span></div></div>');
+    </script>
     <div id="root"></div>
     <script id="site-data" type="application/json">{}</script>
     <script type="module" src="/src/main.tsx"></script>

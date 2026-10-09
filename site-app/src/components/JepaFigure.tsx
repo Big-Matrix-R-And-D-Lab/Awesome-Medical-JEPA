@@ -81,7 +81,7 @@ export function JepaFigure() {
   return (
     <figure className="m-0">
       <div className="-mx-1 overflow-x-auto px-1">
-        <svg viewBox="0 0 670 400" className="h-auto w-full min-w-[520px] sm:min-w-0" role="img" aria-labelledby="fig1-title fig1-desc">
+        <svg viewBox="0 0 670 412" className="h-auto w-full min-w-[520px] sm:min-w-0" role="img" aria-labelledby="fig1-title fig1-desc">
           <title id="fig1-title">JEPA training</title>
           <desc id="fig1-desc">
             The context view, with target blocks masked, passes through the context encoder and the predictor, which also

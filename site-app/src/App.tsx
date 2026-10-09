@@ -10,6 +10,12 @@ import { ThemePicker } from "@/components/ThemePicker"
 import { compact, loadSiteData, type SiteData } from "@/data"
 import { cn } from "@/lib/utils"
 
+declare global {
+  interface Window {
+    __amjBootDone?: () => void
+  }
+}
+
 function Logo() {
   return (
     <svg viewBox="0 0 30 30" className="size-6" aria-hidden>
@@ -269,6 +275,14 @@ export default function App() {
   useEffect(() => {
     loadSiteData().then(setData).catch((e: Error) => setError(e.message))
   }, [])
+
+  // Dismiss the boot loader (index.html) once the app has rendered and the fonts are in,
+  // waiting at most 1.5 s for fonts so a slow font server never holds the page back.
+  useEffect(() => {
+    if (!data && !error) return
+    const fontsReady = Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))])
+    fontsReady.then(() => requestAnimationFrame(() => window.__amjBootDone?.()))
+  }, [data, error])
 
   const repo = data?.repo ?? "https://github.com/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA"
   const stars = useLiveStars(repo, data?.repoStars ?? null)
