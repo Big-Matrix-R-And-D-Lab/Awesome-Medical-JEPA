@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import re
 import sys
 from collections import Counter, OrderedDict
@@ -43,6 +44,16 @@ SECTION_ORDER = [
     "EHR & Clinical Trajectories",
     "Molecular & Single-Cell Biology",
 ]
+
+# Icon shown before each top-level area heading. Areas without one get a plain heading.
+AREA_ICONS = {
+    "Foundations": "🧱",
+    "Medical Imaging": "🩻",
+    "Surgical Video": "🎥",
+    "Physiological Signals": "💓",
+    "EHR & Clinical Trajectories": "📋",
+    "Molecular & Single-Cell Biology": "🧬",
+}
 
 REQUIRED = ["paper_name", "paper_link", "year", "section", "model_name", "inclusion_type"]
 INCLUSION_TYPES = {"Direct Medical JEPA", "JEPA-inspired Medical", "Foundational JEPA"}
@@ -104,7 +115,7 @@ def code_cell(r: dict) -> str:
     m = GITHUB_RE.match(link)
     if m:
         owner, repo = m.group(1), m.group(2).removesuffix(".git")
-        badge = f"https://img.shields.io/github/stars/{owner}/{repo}?style=social"
+        badge = f"https://img.shields.io/github/stars/{owner}/{repo}?style=flat-square&logo=github&label=&color=24292f"
         return f"[![GitHub stars]({badge})]({link})"
     return f"[Code]({link})"
 
@@ -112,23 +123,36 @@ def code_cell(r: dict) -> str:
 def venue_cell(r: dict) -> str:
     venue = r.get("venue_short") or r.get("venue") or "—"
     year = r.get("year", "")
-    return cell(f"{venue} {year}" if year and year not in venue else venue)
+    if year and year not in venue:
+        return f"{cell(venue)}<br><sub>{year}</sub>"
+    return cell(venue)
+
+
+def model_cell(r: dict) -> str:
+    name = cell(r["model_name"])
+    if len(name) <= 18:  # keep short names on one line (non-breaking space and hyphen)
+        name = name.replace(" ", "&nbsp;").replace("-", "‑")
+    model = f"**{name}**"
+    if r.get("inclusion_type") == "JEPA-inspired Medical":
+        model += INSPIRED_MARK
+    return model
 
 
 def paper_row(r: dict) -> str:
-    model = f"**{cell(r['model_name'])}**"
-    if r.get("inclusion_type") == "JEPA-inspired Medical":
-        model += INSPIRED_MARK
     paper = f"[{cell(r['paper_name'])}]({r['paper_link']})"
+    details = []
+    if r.get("modality"):
+        details.append(f"<code>{html.escape(cell(r['modality']))}</code>")
     if r.get("task"):
-        paper += f"<br><sub>{cell(r['task'])}</sub>"
-    return (
-        f"| {model} | {paper} | {venue_cell(r)} | "
-        f"{cell(r.get('modality') or '—')} | {code_cell(r)} |"
-    )
+        details.append(cell(r["task"]))
+    if details:
+        paper += f"<br><sub>{' '.join(details)}</sub>"
+    return f"| {model_cell(r)} | {paper} | {venue_cell(r)} | {code_cell(r)} |"
 
 
-TABLE_HEAD = "| Model | Paper | Venue | Modality | Code |\n| --- | --- | --- | --- | --- |"
+TABLE_HEAD = "| Model | Paper | Venue | Code |\n| :-- | :-- | :-: | :-: |"
+BACK_TO_TOP = '<p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>'
+BAR_WIDTH = 24  # characters for the largest bar in the year chart
 
 
 def sort_key(r: dict):
@@ -144,52 +168,77 @@ def ordered_sections(rows: list[dict]) -> list[str]:
     return [s for s in SECTION_ORDER if s in present or any(p.startswith(s + SEP) for p in present)] + unknown
 
 
-def render_stats(rows: list[dict]) -> str:
+def render_years(rows: list[dict]) -> str:
     years = sorted(Counter(r["year"] for r in rows).items())
-    head = "| | " + " | ".join(y for y, _ in years) + " | **Total** |"
-    sep = "| --- " * (len(years) + 2) + "|"
-    body = "| Papers | " + " | ".join(str(c) for _, c in years) + f" | **{len(rows)}** |"
+    peak = max(n for _, n in years)
+    lines = ["| Year | Papers | |", "| :-- | --: | :-- |"]
+    for year, n in years:
+        bar = "█" * max(1, round(n / peak * BAR_WIDTH))
+        lines.append(f"| {year} | {n} | {bar} |")
+    return "\n".join(lines)
 
-    areas = OrderedDict()
-    for s in ordered_sections(rows):
-        top = s.split(SEP)[0]
-        areas.setdefault(top, 0)
-    for r in rows:
-        areas[r["section"].split(SEP)[0]] += 1
-    area_line = " · ".join(f"{a}: **{n}**" for a, n in areas.items())
-    return f"{head}\n{sep}\n{body}\n\n{area_line}"
+
+def heading_title(section: str) -> str:
+    """Heading text for a section; top-level areas get their icon."""
+    parts = section.split(SEP)
+    icon = AREA_ICONS.get(parts[0]) if len(parts) == 1 else None
+    return f"{icon} {parts[-1]}" if icon else parts[-1]
+
+
+def template_headings(text: str) -> list[str]:
+    """Markdown headings in a template, skipping fenced code blocks."""
+    out, fenced = [], False
+    for line in text.splitlines():
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+        elif not fenced and (m := re.match(r"#{1,6} (.+)", line)):
+            out.append(m.group(1).strip())
+    return out
 
 
 def render(rows: list[dict]) -> str:
+    header = (TEMPLATES / "header.md").read_text(encoding="utf-8")
+    footer = (TEMPLATES / "footer.md").read_text(encoding="utf-8")
+
     used: Counter = Counter()
-    # Reserve anchors for headings that appear in the templates before the sections.
-    for h in ("Awesome Medical JEPA", "What gets listed", "Legend", "At a glance", "Contents"):
+    # Reserve anchors for headings that appear in the header before the sections.
+    for h in template_headings(header):
         slugify(h, used)
 
     by_section: dict[str, list[dict]] = {}
     for r in rows:
         by_section.setdefault(r["section"], []).append(r)
 
-    toc, body = [], []
+    def count(s: str) -> int:
+        return sum(len(v) for k, v in by_section.items() if k == s or k.startswith(s + SEP))
+
+    areas: OrderedDict[str, list] = OrderedDict()  # area -> [link, icon, count, subsection links]
+    body = []
     for s in ordered_sections(rows):
         parts = s.split(SEP)
-        title, level = parts[-1], len(parts)
+        title = heading_title(s)
         anchor = slugify(title, used)
-        count = sum(len(v) for k, v in by_section.items() if k == s or k.startswith(s + SEP))
-        toc.append(f"{'  ' * (level - 1)}- [{title}](#{anchor}) ({count})")
-        body.append(f"{'#' * (level + 1)} {title}\n")
+        link = f"[{parts[-1]}](#{anchor})"
+        if len(parts) == 1:
+            areas[s] = [f"**{link}**", AREA_ICONS.get(s, ""), count(s), []]
+        else:
+            areas.setdefault(parts[0], [parts[0], "", 0, []])[3].append(f"{link}&nbsp;<sub>{count(s)}</sub>")
+        body.append(f"{'#' * (len(parts) + 1)} {title}\n")
         if s in by_section:
             body.append(TABLE_HEAD)
             body.extend(paper_row(r) for r in sorted(by_section[s], key=sort_key))
-            body.append("\n**[⬆ back to top](#contents)**\n")
+            body.append(f"\n{BACK_TO_TOP}\n")
 
-    header = (TEMPLATES / "header.md").read_text(encoding="utf-8")
-    footer = (TEMPLATES / "footer.md").read_text(encoding="utf-8")
+    toc = ["| | Area | Papers | Sections |", "| :-: | :-- | :-: | :-- |"]
+    for link, icon, n, subs in areas.values():
+        toc.append(f"| {icon} | {link} | {n} | {' · '.join(subs) or '—'} |")
+
     with_code = sum(1 for r in rows if r.get("official_code") == "Yes" and r.get("code_link"))
     header = (
         header.replace("{{TOTAL}}", str(len(rows)))
         .replace("{{WITH_CODE}}", str(with_code))
-        .replace("{{STATS}}", render_stats(rows))
+        .replace("{{AREA_COUNT}}", str(len(areas)))
+        .replace("{{YEARS}}", render_years(rows))
         .replace("{{TOC}}", "\n".join(toc))
     )
     note = "<!-- This file is generated by scripts/build_readme.py from data/papers.csv. Do not edit it by hand. -->\n\n"

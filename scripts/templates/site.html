@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="keywords" content="JEPA, medical JEPA, Joint-Embedding Predictive Architecture, I-JEPA, V-JEPA, LeJEPA, self-supervised learning, medical imaging, ECG, EEG, foundation models, healthcare AI">
+<link rel="canonical" href="{{CANONICAL}}">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b1220">
+{{VERIFY}}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Awesome Medical JEPA">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:image" content="{{CANONICAL}}social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Awesome Medical JEPA: Joint-Embedding Predictive Architectures in medicine and healthcare">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{CANONICAL}}social-preview.png">
+<meta name="twitter:title" content="{{TITLE}}">
+<meta name="twitter:description" content="{{DESCRIPTION}}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b1220'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%2314b8a6'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%23f59e0b'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%23f59e0b'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%2314b8a6'/%3E%3C/svg%3E">
+<script type="application/ld+json">{{JSONLD}}</script>
+<style>
+:root {
+  --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9; --border: #e2e8f0;
+  --text: #0f172a; --muted: #475569; --faint: #64748b;
+  --accent: #0d9488; --accent-soft: #ccfbf1; --accent-text: #115e59;
+  --amber: #b45309; --amber-soft: #fef3c7;
+  --link: #0f766e; --shadow: 0 1px 2px rgba(15,23,42,.06), 0 4px 16px rgba(15,23,42,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220; --surface: #111a2e; --surface-2: #17223a; --border: #22304d;
+    --text: #e2e8f0; --muted: #a3b1c6; --faint: #8392a8;
+    --accent: #2dd4bf; --accent-soft: #0f3a3d; --accent-text: #99f6e4;
+    --amber: #fbbf24; --amber-soft: #3a2a0c;
+    --link: #5eead4; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+/* hero */
+.hero {
+  color: #fff;
+  background: radial-gradient(ellipse at 85% 20%, rgba(45,212,191,.25), transparent 55%),
+              linear-gradient(135deg, #0b1220 0%, #10284a 55%, #0b5d66 100%);
+}
+.hero .wrap { display: grid; gap: 32px; padding-top: 56px; padding-bottom: 56px; align-items: center; }
+@media (min-width: 900px) { .hero .wrap { grid-template-columns: 1.4fr 1fr; padding-top: 80px; padding-bottom: 80px; } }
+.eyebrow { color: #5eead4; font-weight: 700; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 12px; }
+.hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 16px; font-weight: 800; }
+.hero p.lead { color: #cbd5e1; font-size: clamp(16px, 2.2vw, 19px); margin: 0 0 24px; max-width: 40em; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0 0 28px; padding: 0; list-style: none; }
+.stats b { display: block; font-size: 28px; line-height: 1.1; color: #fff; }
+.stats span { color: #94a3b8; font-size: 14px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 15px; }
+.btn:hover { text-decoration: none; filter: brightness(1.08); }
+.btn-primary { background: #2dd4bf; color: #042f2e; }
+.btn-ghost { border: 1px solid rgba(255,255,255,.3); color: #fff; }
+.motif { width: 100%; max-width: 420px; justify-self: center; }
+
+/* toolbar */
+.toolbar { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.toolbar .wrap { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 12px; padding-bottom: 12px; }
+.search { flex: 1 1 240px; min-width: 0; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; }
+.search:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+@media (min-width: 720px) { .chips { flex-wrap: wrap; overflow: visible; } }
+.chip-btn { white-space: nowrap; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; }
+.chip-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); white-space: nowrap; cursor: pointer; }
+
+/* content */
+main { padding: 40px 0 64px; }
+.intro { display: grid; gap: 24px; margin-bottom: 48px; }
+@media (min-width: 900px) { .intro { grid-template-columns: 1.3fr 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
+.panel h2 { margin: 0 0 8px; font-size: 22px; }
+.panel p { margin: 0 0 12px; color: var(--muted); }
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; font-size: 14px; }
+.flow span { padding: 6px 10px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); }
+.flow i { color: var(--faint); font-style: normal; }
+.legend { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 15px; color: var(--muted); }
+.legend b { color: var(--text); }
+
+.area { margin-top: 56px; }
+.area > h2 { font-size: clamp(24px, 3vw, 30px); letter-spacing: -.01em; margin: 0 0 4px; display: flex; align-items: baseline; gap: 10px; }
+.count { font-size: 14px; font-weight: 600; color: var(--faint); }
+.area > h3 { margin: 28px 0 12px; font-size: 18px; color: var(--muted); display: flex; gap: 8px; align-items: baseline; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); margin-top: 16px; }
+.card { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); transition: transform .15s ease, border-color .15s ease; }
+.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.model { font-size: 13px; font-weight: 700; color: var(--accent-text); background: var(--accent-soft); align-self: flex-start; padding: 3px 10px; border-radius: 999px; }
+.card .title { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 650; }
+.card .title a { color: var(--text); }
+.authors, .task { margin: 0; font-size: 14px; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+.tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); }
+.tag.venue { font-weight: 600; color: var(--text); }
+.tag.inspired { background: var(--amber-soft); color: var(--amber); border-color: transparent; }
+.links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: 14px; font-weight: 600; border-top: 1px solid var(--border); padding-top: 10px; }
+.links img { height: 20px; vertical-align: middle; display: block; }
+.empty { display: none; text-align: center; color: var(--muted); padding: 48px 0; }
+
+footer { border-top: 1px solid var(--border); padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Awesome list</p>
+      <h1>Awesome Medical JEPA</h1>
+      <p class="lead">A curated list of papers and code that use <strong>Joint-Embedding Predictive Architectures (JEPA)</strong>, including I-JEPA, V-JEPA and LeJEPA, for self-supervised learning in medicine: medical imaging, ECG and EEG, surgical video, EHR and molecular biology.</p>
+      <ul class="stats">
+        <li><b>{{TOTAL}}</b><span>papers</span></li>
+        <li><b>{{WITH_CODE}}</b><span>with official code</span></li>
+        <li><b>{{AREA_COUNT}}</b><span>research areas</span></li>
+        <li><b>{{YEAR_SPAN}}</b><span>years covered</span></li>
+      </ul>
+      <div class="cta">
+        <a class="btn btn-primary" href="{{REPO}}">★ Star on GitHub</a>
+        <a class="btn btn-ghost" href="{{REPO}}/issues/new?template=add-paper.yml">+ Suggest a paper</a>
+      </div>
+    </div>
+    <svg class="motif" viewBox="0 0 540 210" role="img" aria-label="JEPA: context patches pass through a predictor to latent target embeddings">
+      <g stroke="#fff" stroke-opacity=".2">
+        <rect x="0" y="10" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="36" y="10" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="72" y="10" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="108" y="10" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/><rect x="144" y="10" width="30" height="30" rx="6" fill="#14b8a6"/>
+        <rect x="0" y="46" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/><rect x="36" y="46" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="72" y="46" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="108" y="46" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="144" y="46" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/>
+        <rect x="0" y="82" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="36" y="82" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="72" y="82" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="108" y="82" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/><rect x="144" y="82" width="30" height="30" rx="6" fill="#14b8a6"/>
+        <rect x="0" y="118" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/><rect x="36" y="118" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="72" y="118" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="108" y="118" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="144" y="118" width="30" height="30" rx="6" fill="#14b8a6"/>
+        <rect x="0" y="154" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="36" y="154" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/><rect x="72" y="154" width="30" height="30" rx="6" fill="#14b8a6"/><rect x="108" y="154" width="30" height="30" rx="6" fill="#f59e0b"/><rect x="144" y="154" width="30" height="30" rx="6" fill="#14b8a6" fill-opacity=".55"/>
+      </g>
+      <path d="M190 97 H246" stroke="#94a3b8" stroke-width="2"/><path d="M246 91 L256 97 L246 103 z" fill="#94a3b8"/>
+      <rect x="262" y="67" width="104" height="60" rx="14" fill="#fff" fill-opacity=".08" stroke="#5eead4" stroke-opacity=".6"/>
+      <text x="314" y="103" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="600" font-family="system-ui, sans-serif">predictor</text>
+      <path d="M372 97 H418" stroke="#94a3b8" stroke-width="2"/><path d="M418 91 L428 97 L418 103 z" fill="#94a3b8"/>
+      <g fill="#f59e0b"><rect x="440" y="50" width="14" height="94" rx="7"/><rect x="462" y="68" width="14" height="76" rx="7" fill-opacity=".75"/><rect x="484" y="40" width="14" height="104" rx="7" fill-opacity=".9"/><rect x="506" y="82" width="14" height="62" rx="7" fill-opacity=".7"/></g>
+    </svg>
+  </div>
+</header>
+
+<nav class="toolbar" aria-label="Filter papers">
+  <div class="wrap">
+    <input class="search" id="q" type="search" placeholder="Search {{TOTAL}} papers: model, title, author, modality…" aria-label="Search papers">
+    <div class="chips" role="group" aria-label="Research area">{{FILTERS}}</div>
+    <label class="toggle"><input type="checkbox" id="code-only"> Official code only</label>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="intro" aria-label="About this list">
+    <div class="panel">
+      <h2>What is a JEPA?</h2>
+      <p>A Joint-Embedding Predictive Architecture learns representations by <em>predicting in latent space</em>. A context encoder embeds the visible part of the input, and a predictor estimates the embeddings of masked or future target regions produced by a target encoder (typically an EMA of the context encoder).</p>
+      <p>Because it never reconstructs pixels or raw signal values, a JEPA focuses on semantic structure and ignores low-level noise, which makes it a natural fit for medical data, where much of the raw variance is acquisition noise.</p>
+      <div class="flow" aria-hidden="true"><span>Visible context</span><i>→</i><span>Context encoder</span><i>→</i><span>Predictor</span><i>→</i><span>Predicted embeddings</span><i>⇢ latent loss ⇠</i><span>Target encoder (EMA)</span></div>
+    </div>
+    <div class="panel">
+      <h2>How to read this list</h2>
+      <ul class="legend">
+        <li><b>Direct Medical JEPA</b>: applies or extends a JEPA objective on medical or biomedical data.</li>
+        <li><span class="tag inspired">JEPA-inspired</span> adapts JEPA ideas without being a named JEPA, or benchmarks JEPA against other objectives.</li>
+        <li><b>Foundational JEPA</b>: general-domain architectures and theory that medical JEPA work builds on.</li>
+        <li><b>Code</b> links only to <b>official</b> author implementations. <i>arXiv</i> and <i>bioRxiv</i> venues are preprints.</li>
+      </ul>
+    </div>
+  </section>
+
+{{SECTIONS}}
+
+  <p class="empty" id="empty">No papers match your filters.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Generated from <a href="{{REPO}}/blob/main/data/papers.csv">data/papers.csv</a> · updated {{UPDATED}} · <a href="{{REPO}}">GitHub repository</a> · <a href="{{REPO}}/blob/main/CONTRIBUTING.md">Contribute</a></span>
+    <span>List released under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. Each paper and code repository keeps its own license.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var q = document.getElementById("q"), codeOnly = document.getElementById("code-only");
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip-btn"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+  var area = "all";
+  function apply() {
+    var terms = q.value.toLowerCase().split(/\s+/).filter(Boolean), shown = 0;
+    cards.forEach(function (c) {
+      var ok = (area === "all" || c.dataset.area === area) && (!codeOnly.checked || c.dataset.code === "1") &&
+        terms.every(function (t) { return c.dataset.text.indexOf(t) !== -1; });
+      c.hidden = !ok; if (ok) shown++;
+    });
+    document.querySelectorAll(".grid").forEach(function (g) {
+      var any = g.querySelector(".card:not([hidden])"); g.hidden = !any;
+      var h = g.previousElementSibling; if (h && h.tagName === "H3") h.hidden = !any;
+    });
+    document.querySelectorAll(".area").forEach(function (s) { s.hidden = !s.querySelector(".card:not([hidden])"); });
+    document.getElementById("empty").style.display = shown ? "none" : "block";
+  }
+  chips.forEach(function (b) {
+    b.addEventListener("click", function () {
+      area = b.dataset.area;
+      chips.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      apply();
+    });
+  });
+  q.addEventListener("input", apply); codeOnly.addEventListener("change", apply);
+})();
+</script>
+</body>
+</html>

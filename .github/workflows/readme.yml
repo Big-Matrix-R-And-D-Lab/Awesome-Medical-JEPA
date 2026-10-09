@@ -5,7 +5,7 @@ on:
     paths: ["data/**", "scripts/**", "README.md"]
   push:
     branches: [main]
-    paths: ["data/**", "scripts/**"]
+    paths: ["data/**", "scripts/**", "README.md"]
 
 permissions:
   contents: write
@@ -21,6 +21,8 @@ jobs:
           python-version: "3.12"
       - name: Validate CSV and check README is up to date
         run: python scripts/build_readme.py --check
+      - name: Check the Pages site builds
+        run: python scripts/build_site.py
 
   rebuild:
     if: github.event_name == 'push'
