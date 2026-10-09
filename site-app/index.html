@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en" data-palette="hematoxylin">
+<html lang="en" data-palette="scrubs">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Awesome Medical JEPA</title>
     <!-- fonts, SEO meta and JSON-LD are injected by scripts/build_site.py -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cg fill='%233D3F94'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='20' width='7' height='7' rx='1.5'/%3E%3Crect x='20' y='20' width='7' height='7' rx='1.5'/%3E%3C/g%3E%3Cg fill='%23C23B6E'%3E%3Crect x='20' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='20' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='20' width='7' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cg fill='%23147A6E'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='20' width='7' height='7' rx='1.5'/%3E%3Crect x='20' y='20' width='7' height='7' rx='1.5'/%3E%3C/g%3E%3Cg fill='%23E0583F'%3E%3Crect x='20' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='20' y='11.5' width='7' height='7' rx='1.5'/%3E%3Crect x='11.5' y='20' width='7' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" />
     <script>
       // Apply the saved palette and mode before first paint (no flash).
       try {
         var p = localStorage.getItem("amj-palette");
         if (p) document.documentElement.dataset.palette = p;
-        var t = localStorage.getItem("theme") || "system";
+        var t = localStorage.getItem("theme") || "light";
         var dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
         if (dark) document.documentElement.classList.add("dark");
       } catch (e) {}
