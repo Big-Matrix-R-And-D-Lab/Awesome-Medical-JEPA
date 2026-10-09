@@ -140,11 +140,6 @@ export function JepaFigure() {
           <text x={580} y={255} className="fill-target font-mono text-[12px]">space</text>
         </svg>
       </div>
-      <figcaption className="mt-3 text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">Fig. 1.</span> The context encoder sees the image with target blocks
-        masked; the predictor, given their positions, estimates their embeddings. The target encoder, a moving average of
-        the context encoder that receives no gradient, embeds the full image. The loss compares embeddings, never pixels.
-      </figcaption>
     </figure>
   )
 }
