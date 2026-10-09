@@ -1,61 +1,134 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
-  <!-- Source for social-preview.png (GitHub social preview + og:image). Re-render the PNG after editing. -->
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1220"/>
-      <stop offset="0.55" stop-color="#10284a"/>
-      <stop offset="1" stop-color="#0b5d66"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.8" cy="0.4" r="0.6">
-      <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.3"/>
-      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
-    </radialGradient>
-    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.4" fill="#ffffff" fill-opacity="0.06"/>
-    </pattern>
-  </defs>
+  <!-- Source for social-preview.png (GitHub social preview + og:image). Re-render the PNG after editing.
+       Colours follow the site's default Scrubs palette (light). The diagram is I-JEPA-style training:
+       context view -> context encoder f_theta -> predictor g_phi (+ target positions) -> predicted s_y;
+       full view -> target encoder (EMA of f_theta, no gradient) -> target-block embeddings s_y; L2 loss in latent space. -->
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap");
+    .serif { font-family: "Instrument Serif", Georgia, serif; }
+    .sans { font-family: "Instrument Sans", "Segoe UI", sans-serif; }
+    .mono { font-family: "JetBrains Mono", Consolas, monospace; }
+    .ink { fill: #142321; }
+    .muted { fill: #55706b; }
+    .teal { fill: #147a6e; }
+    .coral { fill: #e0583f; }
+    .box { fill: #ffffff; stroke: #cddcd8; stroke-width: 1.5; }
+    .arrow { stroke: #6f8a85; stroke-width: 1.75; fill: none; }
+    .head { fill: #6f8a85; }
+    .ctx { fill: #147a6e; }
+    .masked { fill: #f6faf9; stroke: #e0583f; stroke-width: 1.5; stroke-dasharray: 3 2.5; }
+    .unused { fill: #e2ece9; }
+    .full { fill: #a9c4bf; }
+    .full-t { fill: #a9c4bf; stroke: #e0583f; stroke-width: 2; }
+  </style>
 
-  <rect width="1280" height="640" fill="url(#bg)"/>
-  <rect width="1280" height="640" fill="url(#dots)"/>
-  <rect width="1280" height="640" fill="url(#glow)"/>
+  <rect width="1280" height="640" fill="#f6faf9"/>
 
-  <g font-family="'Segoe UI', -apple-system, Helvetica, Arial, sans-serif">
-    <text x="96" y="156" fill="#5eead4" font-size="22" font-weight="700" letter-spacing="5">AWESOME LIST</text>
-    <text x="92" y="250" fill="#ffffff" font-size="92" font-weight="800" letter-spacing="-2">Medical JEPA</text>
-    <text x="96" y="318" fill="#cbd5e1" font-size="30">Joint-Embedding Predictive Architectures</text>
-    <text x="96" y="358" fill="#cbd5e1" font-size="30">in medicine and healthcare</text>
+  <!-- left: title block -->
+  <text x="72" y="150" class="mono teal" font-size="17" font-weight="500" letter-spacing="4">AWESOME LIST</text>
+  <text x="70" y="226" class="serif ink" font-size="62">Awesome Medical</text>
+  <text x="70" y="294" class="serif teal" font-size="62" font-style="italic">JEPA</text>
+  <text x="72" y="352" class="sans muted" font-size="21">Joint-Embedding Predictive Architectures</text>
+  <text x="72" y="381" class="sans muted" font-size="21">in medicine: papers and official code</text>
 
-    <g font-size="19" font-weight="600" fill="#e2e8f0">
-      <rect x="96" y="398" width="116" height="40" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.2"/>
-      <text x="154" y="425" text-anchor="middle">Imaging</text>
-      <rect x="224" y="398" width="160" height="40" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.2"/>
-      <text x="304" y="425" text-anchor="middle">ECG · EEG</text>
-      <rect x="396" y="398" width="112" height="40" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.2"/>
-      <text x="452" y="425" text-anchor="middle">Surgery</text>
-      <rect x="520" y="398" width="80" height="40" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.2"/>
-      <text x="560" y="425" text-anchor="middle">EHR</text>
-      <rect x="612" y="398" width="104" height="40" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.2"/>
-      <text x="664" y="425" text-anchor="middle">Omics</text>
-    </g>
-
-    <text x="96" y="540" fill="#94a3b8" font-size="22">github.com/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA</text>
+  <g class="sans" font-size="15" font-weight="500">
+    <rect x="72" y="416" width="81" height="34" rx="17" fill="#ffffff" stroke="#cddcd8"/>
+    <text x="112.5" y="438" text-anchor="middle" class="ink">Imaging</text>
+    <rect x="161" y="416" width="96" height="34" rx="17" fill="#ffffff" stroke="#cddcd8"/>
+    <text x="209" y="438" text-anchor="middle" class="ink">ECG · EEG</text>
+    <rect x="265" y="416" width="81" height="34" rx="17" fill="#ffffff" stroke="#cddcd8"/>
+    <text x="305.5" y="438" text-anchor="middle" class="ink">Surgery</text>
+    <rect x="354" y="416" width="51" height="34" rx="17" fill="#ffffff" stroke="#cddcd8"/>
+    <text x="379.5" y="438" text-anchor="middle" class="ink">EHR</text>
+    <rect x="413" y="416" width="66" height="34" rx="17" fill="#ffffff" stroke="#cddcd8"/>
+    <text x="446" y="438" text-anchor="middle" class="ink">Omics</text>
   </g>
 
-  <!-- JEPA motif: context + masked patches -> predictor -> latent targets -->
-  <g transform="translate(830 150) scale(1.0)">
-    <g stroke="#ffffff" stroke-opacity="0.22">
-      <rect x="0" y="0" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="48" y="0" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="96" y="0" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="144" y="0" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/><rect x="192" y="0" width="40" height="40" rx="8" fill="#14b8a6"/>
-      <rect x="0" y="48" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/><rect x="48" y="48" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="96" y="48" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="144" y="48" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="192" y="48" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/>
-      <rect x="0" y="96" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="48" y="96" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="96" y="96" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="144" y="96" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/><rect x="192" y="96" width="40" height="40" rx="8" fill="#14b8a6"/>
-      <rect x="0" y="144" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/><rect x="48" y="144" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="96" y="144" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="144" y="144" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="192" y="144" width="40" height="40" rx="8" fill="#14b8a6"/>
-      <rect x="0" y="192" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="48" y="192" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/><rect x="96" y="192" width="40" height="40" rx="8" fill="#14b8a6"/><rect x="144" y="192" width="40" height="40" rx="8" fill="#f59e0b"/><rect x="192" y="192" width="40" height="40" rx="8" fill="#14b8a6" fill-opacity=".55"/>
-    </g>
-    <path d="M116 250 V284" stroke="#94a3b8" stroke-width="2.5"/><path d="M109 282 L116 294 L123 282 z" fill="#94a3b8"/>
-    <rect x="56" y="300" width="120" height="52" rx="14" fill="#ffffff" fill-opacity="0.08" stroke="#5eead4" stroke-opacity="0.6"/>
-    <text x="116" y="333" text-anchor="middle" fill="#e2e8f0" font-family="'Segoe UI', -apple-system, Helvetica, Arial, sans-serif" font-size="19" font-weight="600">predictor</text>
-    <path d="M182 326 H226" stroke="#94a3b8" stroke-width="2.5"/><path d="M224 319 L236 326 L224 333 z" fill="#94a3b8"/>
-    <g fill="#f59e0b">
-      <rect x="248" y="276" width="16" height="76" rx="8"/><rect x="272" y="292" width="16" height="60" rx="8" fill-opacity=".75"/><rect x="296" y="266" width="16" height="86" rx="8" fill-opacity=".9"/><rect x="320" y="304" width="16" height="48" rx="8" fill-opacity=".7"/>
-    </g>
+  <text x="72" y="540" class="mono muted" font-size="15">big-matrix-r-and-d-lab.github.io/Awesome-Medical-JEPA</text>
+
+  <!-- right: JEPA training diagram -->
+  <!-- input grids: 5x5 patches, 22px cells on a 26px pitch.
+       mask  row0 c c c . t | row1 c t t c t | row2 c t t c c | row3 c c c c . | row4 . c t t c -->
+  <text x="556" y="122" class="mono muted" font-size="13">context view (targets masked)</text>
+  <g>
+    <rect class="ctx" x="556" y="133" width="22" height="22" rx="3"/><rect class="ctx" x="582" y="133" width="22" height="22" rx="3"/><rect class="ctx" x="608" y="133" width="22" height="22" rx="3"/><rect class="unused" x="634" y="133" width="22" height="22" rx="3"/><rect class="masked" x="660" y="133" width="22" height="22" rx="3"/>
+    <rect class="ctx" x="556" y="159" width="22" height="22" rx="3"/><rect class="masked" x="582" y="159" width="22" height="22" rx="3"/><rect class="masked" x="608" y="159" width="22" height="22" rx="3"/><rect class="ctx" x="634" y="159" width="22" height="22" rx="3"/><rect class="masked" x="660" y="159" width="22" height="22" rx="3"/>
+    <rect class="ctx" x="556" y="185" width="22" height="22" rx="3"/><rect class="masked" x="582" y="185" width="22" height="22" rx="3"/><rect class="masked" x="608" y="185" width="22" height="22" rx="3"/><rect class="ctx" x="634" y="185" width="22" height="22" rx="3"/><rect class="ctx" x="660" y="185" width="22" height="22" rx="3"/>
+    <rect class="ctx" x="556" y="211" width="22" height="22" rx="3"/><rect class="ctx" x="582" y="211" width="22" height="22" rx="3"/><rect class="ctx" x="608" y="211" width="22" height="22" rx="3"/><rect class="ctx" x="634" y="211" width="22" height="22" rx="3"/><rect class="unused" x="660" y="211" width="22" height="22" rx="3"/>
+    <rect class="unused" x="556" y="237" width="22" height="22" rx="3"/><rect class="ctx" x="582" y="237" width="22" height="22" rx="3"/><rect class="masked" x="608" y="237" width="22" height="22" rx="3"/><rect class="masked" x="634" y="237" width="22" height="22" rx="3"/><rect class="ctx" x="660" y="237" width="22" height="22" rx="3"/>
   </g>
+
+  <text x="556" y="346" class="mono muted" font-size="13">full view</text>
+  <g>
+    <rect class="full" x="556" y="357" width="22" height="22" rx="3"/><rect class="full" x="582" y="357" width="22" height="22" rx="3"/><rect class="full" x="608" y="357" width="22" height="22" rx="3"/><rect class="full" x="634" y="357" width="22" height="22" rx="3"/><rect class="full-t" x="660" y="357" width="22" height="22" rx="3"/>
+    <rect class="full" x="556" y="383" width="22" height="22" rx="3"/><rect class="full-t" x="582" y="383" width="22" height="22" rx="3"/><rect class="full-t" x="608" y="383" width="22" height="22" rx="3"/><rect class="full" x="634" y="383" width="22" height="22" rx="3"/><rect class="full-t" x="660" y="383" width="22" height="22" rx="3"/>
+    <rect class="full" x="556" y="409" width="22" height="22" rx="3"/><rect class="full-t" x="582" y="409" width="22" height="22" rx="3"/><rect class="full-t" x="608" y="409" width="22" height="22" rx="3"/><rect class="full" x="634" y="409" width="22" height="22" rx="3"/><rect class="full" x="660" y="409" width="22" height="22" rx="3"/>
+    <rect class="full" x="556" y="435" width="22" height="22" rx="3"/><rect class="full" x="582" y="435" width="22" height="22" rx="3"/><rect class="full" x="608" y="435" width="22" height="22" rx="3"/><rect class="full" x="634" y="435" width="22" height="22" rx="3"/><rect class="full" x="660" y="435" width="22" height="22" rx="3"/>
+    <rect class="full" x="556" y="461" width="22" height="22" rx="3"/><rect class="full" x="582" y="461" width="22" height="22" rx="3"/><rect class="full-t" x="608" y="461" width="22" height="22" rx="3"/><rect class="full-t" x="634" y="461" width="22" height="22" rx="3"/><rect class="full" x="660" y="461" width="22" height="22" rx="3"/>
+  </g>
+
+  <!-- encoders -->
+  <rect class="box" x="712" y="167" width="170" height="58" rx="10"/>
+  <text x="797" y="194" text-anchor="middle" class="sans ink" font-size="17" font-weight="600">Context encoder</text>
+  <text x="797" y="215" text-anchor="middle" class="mono muted" font-size="15">f<tspan baseline-shift="sub" font-size="12">θ</tspan></text>
+
+  <rect class="box" x="712" y="391" width="170" height="58" rx="10"/>
+  <text x="797" y="418" text-anchor="middle" class="sans ink" font-size="17" font-weight="600">Target encoder</text>
+  <text x="797" y="439" text-anchor="middle" class="mono muted" font-size="14">EMA of f<tspan baseline-shift="sub" font-size="12">θ</tspan></text>
+  <text x="797" y="472" text-anchor="middle" class="mono muted" font-size="12">no gradient (stop-grad)</text>
+
+  <path class="arrow" d="M686 196 H704"/><path class="head" d="M704 190.5 L713 196 L704 201.5 z"/>
+  <path class="arrow" d="M686 420 H704"/><path class="head" d="M704 414.5 L713 420 L704 425.5 z"/>
+
+  <!-- EMA update: context encoder weights -> target encoder -->
+  <path d="M797 229 V380" stroke="#147a6e" stroke-width="1.75" stroke-dasharray="5 4" fill="none"/>
+  <path d="M791.5 380 L797 389 L802.5 380 z" class="teal"/>
+  <text x="808" y="304" class="mono teal" font-size="13" font-weight="500">EMA</text>
+  <text x="808" y="321" class="mono teal" font-size="13">weights</text>
+
+  <!-- predictor with target-position mask tokens -->
+  <rect class="box" x="914" y="167" width="120" height="58" rx="10"/>
+  <text x="974" y="194" text-anchor="middle" class="sans ink" font-size="17" font-weight="600">Predictor</text>
+  <text x="974" y="215" text-anchor="middle" class="mono muted" font-size="15">g<tspan baseline-shift="sub" font-size="12">φ</tspan></text>
+  <path class="arrow" d="M882 196 H906"/><path class="head" d="M906 190.5 L915 196 L906 201.5 z"/>
+
+  <text x="974" y="100" text-anchor="middle" class="mono muted" font-size="12">+ target positions</text>
+  <g fill="#ffffff" stroke="#e0583f" stroke-width="1.5" stroke-dasharray="3 2.5">
+    <rect x="945" y="112" width="16" height="16" rx="2"/><rect x="966" y="112" width="16" height="16" rx="2"/><rect x="987" y="112" width="16" height="16" rx="2"/>
+  </g>
+  <path class="arrow" d="M974 132 V158"/><path class="head" d="M968.5 158 L974 167 L979.5 158 z"/>
+
+  <!-- predicted target embeddings -->
+  <path class="arrow" d="M1034 196 H1060"/><path class="head" d="M1060 190.5 L1069 196 L1060 201.5 z"/>
+  <g fill="#e0583f" fill-opacity="0.28" stroke="#e0583f" stroke-width="1.5">
+    <rect x="1072" y="176" width="14" height="40" rx="3"/><rect x="1092" y="176" width="14" height="40" rx="3"/><rect x="1112" y="176" width="14" height="40" rx="3"/><rect x="1132" y="176" width="14" height="40" rx="3"/>
+  </g>
+  <text x="1158" y="203" class="serif ink" font-size="26" font-style="italic">ŝ<tspan baseline-shift="sub" font-size="17">y</tspan></text>
+
+  <!-- target branch: all patch embeddings, target blocks selected -->
+  <path class="arrow" d="M882 420 H906"/><path class="head" d="M906 414.5 L915 420 L906 425.5 z"/>
+  <g>
+    <rect x="918" y="400" width="12" height="40" rx="3" fill="#c9d8d5"/>
+    <rect x="935" y="400" width="12" height="40" rx="3" fill="#e0583f"/>
+    <rect x="952" y="400" width="12" height="40" rx="3" fill="#c9d8d5"/>
+    <rect x="969" y="400" width="12" height="40" rx="3" fill="#e0583f"/>
+    <rect x="986" y="400" width="12" height="40" rx="3" fill="#c9d8d5"/>
+    <rect x="1003" y="400" width="12" height="40" rx="3" fill="#e0583f"/>
+    <rect x="1020" y="400" width="12" height="40" rx="3" fill="#e0583f"/>
+    <rect x="1037" y="400" width="12" height="40" rx="3" fill="#c9d8d5"/>
+  </g>
+  <text x="983" y="472" text-anchor="middle" class="mono muted" font-size="12">select target blocks</text>
+  <path class="arrow" d="M1052 420 H1060"/><path class="head" d="M1060 414.5 L1069 420 L1060 425.5 z"/>
+  <g fill="#e0583f">
+    <rect x="1072" y="400" width="14" height="40" rx="3"/><rect x="1092" y="400" width="14" height="40" rx="3"/><rect x="1112" y="400" width="14" height="40" rx="3"/><rect x="1132" y="400" width="14" height="40" rx="3"/>
+  </g>
+  <text x="1158" y="427" class="serif ink" font-size="26" font-style="italic">s<tspan baseline-shift="sub" font-size="17">y</tspan></text>
+
+  <!-- loss in latent space -->
+  <path d="M1109 222 V394" stroke="#e0583f" stroke-width="2" stroke-dasharray="5 4" fill="none"/>
+  <text x="1120" y="300" class="mono coral" font-size="14" font-weight="500">L2 loss</text>
+  <text x="1120" y="318" class="mono coral" font-size="13">in latent</text>
+  <text x="1120" y="335" class="mono coral" font-size="13">space</text>
+
+  <text x="1216" y="540" text-anchor="end" class="mono muted" font-size="13">Predict the embeddings of masked blocks from context. Never pixels.</text>
 </svg>
