@@ -223,7 +223,3 @@ If this list helps your research, please consider citing the accompanying survey
 [![CC0](https://licensebuttons.net/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)
 
 To the extent possible under law, the contributors have waived all copyright and related rights to this list. Each listed paper and code repository remains under its own license.
-#   A w e s o m e - M e d i c a l - J e p a  
- #   A w e s o m e - M e d i c a l - J E P A  
- #   A w e s o m e - M e d i c a l - J E P A  
- 
