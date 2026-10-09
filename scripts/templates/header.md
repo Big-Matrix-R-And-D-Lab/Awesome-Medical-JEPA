@@ -24,9 +24,12 @@ A JEPA learns representations by *predicting in latent space*. A context encoder
 
 ```mermaid
 flowchart LR
-    X["Visible context"] --> EX["Context encoder"] --> P["Predictor"] --> SP["Predicted embeddings"]
-    Y["Masked targets"] --> EY["Target encoder (EMA)"] --> ST["Target embeddings"]
-    SP -. "latent loss" .- ST
+    X["Context view<br/>(target blocks masked)"] --> EX["Context encoder f<sub>θ</sub>"] --> SX["Context embeddings s<sub>x</sub>"] --> P["Predictor g<sub>φ</sub>"] --> SP["Predicted ŝ<sub>y</sub>"]
+    M["Target positions"] --> P
+    Y["Full view"] --> EY["Target encoder<br/>EMA of f<sub>θ</sub>, no gradient"] --> SEL["Select target blocks"] --> ST["Target s<sub>y</sub>"]
+    EX -. "EMA weights" .-> EY
+    SP --> L(["L2 loss in latent space"])
+    ST --> L
 ```
 
 The original formulations are I-JEPA for images and V-JEPA for video; they are listed under [Foundations](#-foundations).

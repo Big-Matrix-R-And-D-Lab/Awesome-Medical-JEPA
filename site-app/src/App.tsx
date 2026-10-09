@@ -119,7 +119,7 @@ function Hero({ data, stars }: { data: SiteData; stars: number | null }) {
   const withCode = data.papers.filter((p) => p.code).length
   return (
     <section id="top" className="grid items-center gap-12 pb-16 pt-12 lg:grid-cols-[1.05fr_1fr] lg:pt-20">
-      <div className="flex flex-col gap-6">
+      <div className="flex min-w-0 flex-col gap-6">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
           Curated reading list <span className="mx-1 text-primary">·</span> updated {data.updated}
         </p>
@@ -151,7 +151,7 @@ function Hero({ data, stars }: { data: SiteData; stars: number | null }) {
           </Button>
         </div>
       </div>
-      <div className="rounded-xl border bg-card p-5 sm:p-7">
+      <div className="min-w-0 rounded-xl border bg-card p-5 sm:p-7">
         <JepaFigure />
       </div>
     </section>
