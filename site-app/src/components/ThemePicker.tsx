@@ -31,7 +31,7 @@ function readPalette(): PaletteId {
   } catch {
     /* storage blocked: use default */
   }
-  return "hematoxylin"
+  return "scrubs" // default palette for first-time visitors
 }
 
 export function usePalette() {
