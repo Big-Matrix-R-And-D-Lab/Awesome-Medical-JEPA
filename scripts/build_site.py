@@ -4,9 +4,11 @@
 Usage:
     python scripts/build_site.py
 
-Writes site/index.html, site/sitemap.xml, site/robots.txt and the social preview image. The site/ folder is
-build output (git-ignored); the Pages workflow builds and deploys it on every push to main.
-Only the Python standard library is used.
+The page itself is a React + shadcn/ui app (source in site-app/), bundled once into
+scripts/templates/site.html. This script fills that bundle with the paper data, SEO tags,
+JSON-LD and a static fallback list for crawlers, then writes site/index.html, site/data.json,
+site/sitemap.xml, site/robots.txt and the social preview image. site/ is build output
+(git-ignored); the Pages workflow runs this on every push to main. Standard library only.
 """
 
 from __future__ import annotations
@@ -34,11 +36,16 @@ from build_readme import (
 REPO_URL = "https://github.com/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA"
 SITE_URL = "https://big-matrix-r-and-d-lab.github.io/Awesome-Medical-JEPA/"
 OUT = ROOT / "site"
+TEMPLATE = TEMPLATES / "site.html"  # bundled site-app; rebuild it with site-app/README.md
 
 # Paste the content value of Google Search Console's HTML-tag verification here.
 GOOGLE_SITE_VERIFICATION = ""
 
 TITLE = "Awesome Medical JEPA: JEPA Papers & Code for Healthcare AI"
+FONTS = (
+    "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700"
+    "&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+)
 
 
 def esc(text: str) -> str:
@@ -50,15 +57,15 @@ def slug(text: str) -> str:
 
 
 def person(name: str) -> str:
-    """'Last, First' -> 'First Last'."""
+    """'Last, First' -> 'First Last'. Names already in 'First Last' form pass through."""
+    if "," not in name:
+        return " ".join(name.split())
     last, _, first = name.partition(",")
     return f"{first.strip()} {last.strip()}".strip()
 
 
-def short_authors(authors: str) -> str:
-    names = [a.strip() for a in authors.split(";") if a.strip()]
-    lasts = [n.split(",")[0].strip() for n in names]
-    return ", ".join(lasts) if len(lasts) <= 3 else f"{', '.join(lasts[:3])} et al."
+def authors_of(r: dict) -> list[str]:
+    return [person(a) for a in r.get("authors", "").split(";") if a.strip()]
 
 
 def has_code(r: dict) -> bool:
@@ -69,12 +76,6 @@ def venue_name(r: dict) -> str:
     """Venue without the year (the year is shown separately)."""
     venue = r.get("venue_short") or r.get("venue") or ""
     return re.sub(r"\s*\b(19|20)\d\d\b", "", venue).strip() or venue
-
-
-def venue_label(r: dict) -> str:
-    venue = r.get("venue_short") or r.get("venue") or ""
-    year = r.get("year", "")
-    return f"{venue} {year}" if year and year not in venue else venue
 
 
 def fetch_stars(code_links: list[str]) -> dict[str, int]:
@@ -99,110 +100,54 @@ def fetch_stars(code_links: list[str]) -> dict[str, int]:
     return stars
 
 
-def compact(n: int) -> str:
-    return f"{n / 1000:.1f}k".replace(".0k", "k") if n >= 1000 else str(n)
-
-
-# ------------------------------------------------------------------------- render
-def paper_row(r: dict, stars: dict[str, int], heading: str) -> str:
-    links = [f'<a href="{esc(r["paper_link"])}">Paper</a>']
-    if has_code(r):
-        count = stars.get(r["code_link"])
-        star = f' <span class="stars">★ {compact(count)}</span>' if count is not None else ""
-        links.append(f'<a href="{esc(r["code_link"])}">Code{star}</a>')
-    if r.get("doi"):
-        links.append(f'<a href="https://doi.org/{esc(r["doi"])}">DOI</a>')
-    if r.get("project_link") and r["project_link"] not in (r.get("code_link"), r["paper_link"]):
-        links.append(f'<a href="{esc(r["project_link"])}">Project</a>')
-    if not has_code(r):
-        links.append('<span class="none">No official code</span>')
-
-    model = esc(r["model_name"])
-    if r.get("inclusion_type") == "JEPA-inspired Medical":
-        model += ' <span class="tag-inspired">JEPA-inspired</span>'
-    text = " ".join(
-        r.get(k, "") for k in ("model_name", "paper_name", "authors", "venue", "venue_short", "year",
-                                "modality", "task", "jepa_variant", "medical_domain", "section")
-    ).lower()
-    parts = [
-        f'<article class="paper" data-code="{1 if has_code(r) else 0}" data-text="{esc(text)}">',
-        f'<div class="when"><span class="yr">{esc(r["year"])}</span><span>{esc(venue_name(r))}</span></div>',
-        '<div class="body">',
-        f'<p class="model">{model}</p>',
-        f'<{heading} class="title"><a href="{esc(r["paper_link"])}">{esc(r["paper_name"])}</a></{heading}>',
-    ]
-    if r.get("authors"):
-        parts.append(f'<p class="authors">{esc(short_authors(r["authors"]))}</p>')
-    if r.get("task"):
-        parts.append(f'<p class="task">{esc(r["task"])}</p>')
-    parts.append("</div>")
-    parts.append('<div class="aside">')
-    if r.get("modality"):
-        parts.append(f'<span class="modality">{esc(r["modality"])}</span>')
-    parts.append(f'<div class="links">{"".join(links)}</div>')
-    parts.append("</div>")
-    parts.append("</article>")
-    return "\n".join(parts)
-
-
-def render_sections(rows: list[dict], stars: dict[str, int]) -> tuple[str, str, int]:
-    """Return (sections html, contents nav html, number of areas)."""
+# --------------------------------------------------------------------------- data
+def site_data(rows: list[dict], stars: dict[str, int], updated: str) -> dict:
+    """The JSON contract read by site-app/src/data.ts."""
     by_section: dict[str, list[dict]] = {}
     for r in rows:
         by_section.setdefault(r["section"], []).append(r)
 
-    def count(s: str) -> int:
-        return sum(len(v) for k, v in by_section.items() if k == s or k.startswith(s + SEP))
-
-    out: list[str] = []
-    toc: list[str] = []
-    areas = 0
-    open_area = None
+    papers, areas = [], []
     for s in ordered_sections(rows):
         parts = s.split(SEP)
         area = parts[0]
-        if area != open_area:
-            if open_area is not None:
-                out.append("</section>")
-            areas += 1
-            out.append(f'<section class="area" id="{slug(area)}">')
-            out.append(f'<h2>{esc(area)} <span class="n">{count(area)}</span></h2>')
-            toc.append(f'<li><a href="#{slug(area)}"><span>{esc(area)}</span><span class="n">{count(area)}</span></a></li>')
-            open_area = area
+        if not areas or areas[-1]["name"] != area:
+            areas.append({"name": area, "slug": slug(area), "count": 0, "subsections": []})
         if s not in by_section:
             continue
-        out.append('<div class="group">')
-        heading = "h3"
         if len(parts) > 1:
-            out.append(f'<h3 id="{slug(s)}">{esc(parts[-1])}</h3>')
-            toc.append(f'<li class="sub"><a href="#{slug(s)}"><span>{esc(parts[-1])}</span><span class="n">{count(s)}</span></a></li>')
-            heading = "h4"
-        out.extend(paper_row(r, stars, heading) for r in sorted(by_section[s], key=sort_key))
-        out.append("</div>")
-    if open_area is not None:
-        out.append("</section>")
-    return "\n".join(out), "\n".join(toc), areas
+            areas[-1]["subsections"].append({"name": parts[-1], "count": len(by_section[s])})
+        areas[-1]["count"] += len(by_section[s])
+        for r in sorted(by_section[s], key=sort_key):
+            papers.append({
+                "id": slug(f"{r['model_name']} {r['year']} {r['paper_name'][:40]}"),
+                "model": r["model_name"],
+                "title": r["paper_name"],
+                "url": r["paper_link"],
+                "year": int(r["year"]),
+                "venue": venue_name(r),
+                "venueFull": r.get("venue", ""),
+                "authors": authors_of(r),
+                "area": area,
+                "areaSlug": slug(area),
+                "subsection": parts[-1] if len(parts) > 1 else "",
+                "modality": r.get("modality", ""),
+                "task": r.get("task", ""),
+                "variant": r.get("jepa_variant", ""),
+                "domain": r.get("medical_domain", ""),
+                "inclusion": r.get("inclusion_type", ""),
+                "code": r["code_link"] if has_code(r) else "",
+                "stars": stars.get(r["code_link"]) if has_code(r) else None,
+                "doi": r.get("doi", ""),
+                "project": r.get("project_link", ""),
+                "dataset": r.get("dataset_link", ""),
+            })
+    return {"repo": REPO_URL, "updated": updated, "papers": papers, "areas": areas}
 
 
-# A 6x6 patch grid for Fig. 1: c = visible context, t = masked target, . = unused patch.
-FIGURE_MASK = [
-    "cccc..",
-    "ctt.cc",
-    "ctt.cc",
-    "cc.cct",
-    ".cccct",
-    "cc.c..",
-]
-
-
-def figure_grid() -> str:
-    """SVG rects for the Fig. 1 input grid (20px patches on a 24px pitch at x=10, y=34)."""
-    cls = {"c": "ctx", "t": "tgt", ".": "patch"}
-    return "\n".join(
-        f'          <rect class="{cls[ch]}" x="{10 + x * 24}" y="{34 + y * 24}" width="20" height="20" rx="2"/>'
-        for y, row in enumerate(FIGURE_MASK)
-        for x, ch in enumerate(row)
-    )
+def script_json(obj) -> str:
+    # "</" must not appear inside a <script> block.
+    return json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
 
 def json_ld(rows: list[dict], description: str) -> str:
@@ -214,7 +159,7 @@ def json_ld(rows: list[dict], description: str) -> str:
             "headline": r["paper_name"][:110],
             "url": r["paper_link"],
             "datePublished": r["year"],
-            "author": [{"@type": "Person", "name": person(a)} for a in r.get("authors", "").split(";") if a.strip()],
+            "author": [{"@type": "Person", "name": a} for a in authors_of(r)],
             "keywords": [k for k in ("JEPA", r.get("jepa_variant"), r.get("modality"), r.get("medical_domain")) if k],
         }
         if r.get("venue"):
@@ -222,7 +167,7 @@ def json_ld(rows: list[dict], description: str) -> str:
         if r.get("doi"):
             article["sameAs"] = f"https://doi.org/{r['doi']}"
         items.append({"@type": "ListItem", "position": i, "item": article})
-    data = {
+    return script_json({
         "@context": "https://schema.org",
         "@graph": [
             {"@type": "WebSite", "@id": SITE_URL + "#website", "name": "Awesome Medical JEPA", "url": SITE_URL,
@@ -242,42 +187,86 @@ def json_ld(rows: list[dict], description: str) -> str:
                 "mainEntity": {"@type": "ItemList", "numberOfItems": len(items), "itemListElement": items},
             },
         ],
-    }
-    # "</" must not appear inside a <script> block.
-    return json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    })
 
 
-def render(rows: list[dict]) -> str:
-    stars = fetch_stars([r["code_link"] for r in rows if has_code(r)])
-    sections, toc, area_count = render_sections(rows, stars)
-    years = sorted({r["year"] for r in rows})
-    with_code = sum(1 for r in rows if has_code(r))
+# ------------------------------------------------------------------------- render
+def head_tags(description: str, rows: list[dict]) -> str:
+    tags = [
+        f'<meta name="description" content="{esc(description)}">',
+        '<meta name="keywords" content="JEPA, medical JEPA, Joint-Embedding Predictive Architecture, I-JEPA, '
+        'V-JEPA, LeJEPA, self-supervised learning, medical imaging, ECG, EEG, foundation models, healthcare AI">',
+        f'<link rel="canonical" href="{SITE_URL}">',
+        '<meta name="robots" content="index, follow">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:site_name" content="Awesome Medical JEPA">',
+        f'<meta property="og:title" content="{esc(TITLE)}">',
+        f'<meta property="og:description" content="{esc(description)}">',
+        f'<meta property="og:url" content="{SITE_URL}">',
+        f'<meta property="og:image" content="{SITE_URL}social-preview.png">',
+        '<meta property="og:image:width" content="1280">',
+        '<meta property="og:image:height" content="640">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:title" content="{esc(TITLE)}">',
+        f'<meta name="twitter:description" content="{esc(description)}">',
+        f'<meta name="twitter:image" content="{SITE_URL}social-preview.png">',
+        '<link rel="preconnect" href="https://fonts.googleapis.com">',
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        f'<link rel="stylesheet" href="{esc(FONTS)}">',
+        f'<script type="application/ld+json">{json_ld(rows, description)}</script>',
+    ]
+    if GOOGLE_SITE_VERIFICATION:
+        tags.insert(0, f'<meta name="google-site-verification" content="{esc(GOOGLE_SITE_VERIFICATION)}">')
+    return "\n".join(tags)
+
+
+def fallback_html(data: dict) -> str:
+    """Plain HTML copy of the list inside #root. Crawlers and no-JS readers see it;
+    React replaces it as soon as the app mounts."""
+    out = [
+        '<div style="max-width:60rem;margin:0 auto;padding:2rem 1rem;font-family:system-ui,sans-serif;line-height:1.5">',
+        "<h1>Awesome Medical JEPA</h1>",
+        f"<p>{len(data['papers'])} curated papers and official code using Joint-Embedding Predictive "
+        "Architectures (JEPA) in medicine and healthcare.</p>",
+    ]
+    area = None
+    for p in data["papers"]:
+        if p["area"] != area:
+            if area is not None:
+                out.append("</ul>")
+            area = p["area"]
+            out.append(f"<h2>{esc(area)}</h2><ul>")
+        code = f' · <a href="{esc(p["code"])}">code</a>' if p["code"] else ""
+        out.append(
+            f'<li><strong>{esc(p["model"])}</strong>: <a href="{esc(p["url"])}">{esc(p["title"])}</a> '
+            f'({esc(p["venue"])} {p["year"]}){code}</li>'
+        )
+    if area is not None:
+        out.append("</ul>")
+    out.append(f'<p><a href="{REPO_URL}">Source on GitHub</a></p></div>')
+    return "".join(out)
+
+
+def sub_once(pattern: str, repl: str, text: str, what: str) -> str:
+    new, n = re.subn(pattern, lambda _m: repl, text, count=1)
+    if n != 1:
+        raise SystemExit(f"build_site: could not find {what} in {TEMPLATE.name}; was the bundle rebuilt?")
+    return new
+
+
+def render(rows: list[dict], data: dict) -> str:
     description = (
         f"{len(rows)} curated medical JEPA papers: I-JEPA, V-JEPA and LeJEPA for MRI, CT, "
         "ultrasound, ECG, EEG, surgical video and EHR, with official code."
     )
-    verify = (
-        f'<meta name="google-site-verification" content="{esc(GOOGLE_SITE_VERIFICATION)}">'
-        if GOOGLE_SITE_VERIFICATION else ""
+    page = TEMPLATE.read_text(encoding="utf-8")
+    page = sub_once(r"<title>.*?</title>", f"<title>{esc(TITLE)}</title>\n{head_tags(description, rows)}", page, "<title>")
+    page = sub_once(
+        r'<script id="?site-data"? type="?application/json"?>\{\}</script>',
+        f'<script id="site-data" type="application/json">{script_json(data)}</script>',
+        page, "the site-data script",
     )
-    page = (TEMPLATES / "site.html").read_text(encoding="utf-8")
-    for key, value in {
-        "{{TITLE}}": esc(TITLE),
-        "{{DESCRIPTION}}": esc(description),
-        "{{CANONICAL}}": SITE_URL,
-        "{{VERIFY}}": verify,
-        "{{JSONLD}}": json_ld(rows, description),
-        "{{TOTAL}}": str(len(rows)),
-        "{{WITH_CODE}}": str(with_code),
-        "{{AREA_COUNT}}": str(area_count),
-        "{{YEAR_SPAN}}": f"{years[0]}–{years[-1]}" if len(years) > 1 else years[0],
-        "{{TOC}}": toc,
-        "{{FIGURE_GRID}}": figure_grid(),
-        "{{SECTIONS}}": sections,
-        "{{REPO}}": REPO_URL,
-        "{{UPDATED}}": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-    }.items():
-        page = page.replace(key, value)
+    page = sub_once(r'<div id="?root"?></div>', f'<div id="root">{fallback_html(data)}</div>', page, "#root")
     return page
 
 
@@ -289,10 +278,14 @@ def main() -> int:
         print("Found problems in data/papers.csv:", *errors, sep="\n  - ", file=sys.stderr)
         return 1
 
-    OUT.mkdir(exist_ok=True)
-    (OUT / "index.html").write_text(render(rows), encoding="utf-8", newline="\n")
-    shutil.copyfile(ROOT / "assets" / "social-preview.png", OUT / "social-preview.png")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    stars = fetch_stars([r["code_link"] for r in rows if has_code(r)])
+    data = site_data(rows, stars, today)
+
+    OUT.mkdir(exist_ok=True)
+    (OUT / "index.html").write_text(render(rows, data), encoding="utf-8", newline="\n")
+    (OUT / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
+    shutil.copyfile(ROOT / "assets" / "social-preview.png", OUT / "social-preview.png")
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

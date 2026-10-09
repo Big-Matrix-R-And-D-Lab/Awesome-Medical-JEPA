@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Theming: shadcn/ui CSS variables ("H S% L%" triplets).
+  - Mode (light / dark / system) is a `dark` class set by next-themes.
+  - Palette is a `data-palette` attribute on <html>. Each palette sets a neutral hue (--nh, --ns)
+    that tints every surface, plus --primary (context / actions) and --target (masked target / highlights).
+*/
+@layer base {
+  :root {
+    --nh: 240; --ns: 10%;
+    --primary: 238 42% 41%;
+    --target: 337 54% 48%;
+
+    --background: var(--nh) calc(var(--ns) + 6%) 98.5%;
+    --foreground: var(--nh) 24% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: var(--nh) 24% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--nh) 24% 11%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: var(--nh) var(--ns) 94%;
+    --secondary-foreground: var(--nh) 24% 14%;
+    --muted: var(--nh) var(--ns) 94.5%;
+    --muted-foreground: var(--nh) 10% 40%;
+    --accent: var(--nh) calc(var(--ns) + 10%) 93%;
+    --accent-foreground: var(--nh) 30% 18%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: var(--nh) var(--ns) 88%;
+    --input: var(--nh) var(--ns) 84%;
+    --ring: var(--primary);
+    --radius: 0.625rem;
+    --patch: var(--nh) var(--ns) 90%;
+  }
+
+  .dark {
+    --primary: 237 72% 78%;
+    --target: 338 78% 70%;
+    --background: var(--nh) calc(var(--ns) + 8%) 6.5%;
+    --foreground: var(--nh) 12% 93%;
+    --card: var(--nh) calc(var(--ns) + 6%) 9%;
+    --card-foreground: var(--nh) 12% 93%;
+    --popover: var(--nh) calc(var(--ns) + 6%) 9%;
+    --popover-foreground: var(--nh) 12% 93%;
+    --primary-foreground: var(--nh) 30% 8%;
+    --secondary: var(--nh) var(--ns) 14%;
+    --secondary-foreground: var(--nh) 12% 93%;
+    --muted: var(--nh) var(--ns) 13%;
+    --muted-foreground: var(--nh) 8% 64%;
+    --accent: var(--nh) calc(var(--ns) + 6%) 16%;
+    --accent-foreground: var(--nh) 12% 95%;
+    --destructive: 0 62% 45%;
+    --border: var(--nh) var(--ns) 17%;
+    --input: var(--nh) var(--ns) 21%;
+    --patch: var(--nh) var(--ns) 18%;
+  }
+
+  /* Hematoxylin (default): H&E stain indigo with eosin pink */
+  [data-palette="hematoxylin"] { --nh: 240; --ns: 10%; }
+
+  /* Radiograph: cool cyan on blue-slate, contrast-orange targets */
+  [data-palette="radiograph"] { --nh: 212; --ns: 18%; --primary: 199 89% 34%; --target: 22 92% 52%; }
+  .dark[data-palette="radiograph"] { --primary: 196 85% 60%; --target: 26 95% 62%; }
+
+  /* Scrubs: surgical teal-green with coral targets */
+  [data-palette="scrubs"] { --nh: 170; --ns: 12%; --primary: 173 70% 27%; --target: 8 76% 56%; }
+  .dark[data-palette="scrubs"] { --primary: 167 58% 52%; --target: 10 85% 68%; }
+
+  /* Iodine: contrast-agent amber with blue targets */
+  [data-palette="iodine"] { --nh: 30; --ns: 12%; --primary: 26 88% 40%; --target: 205 78% 42%; }
+  .dark[data-palette="iodine"] { --primary: 34 92% 58%; --target: 202 85% 64%; }
+
+  /* Graphite: monochrome with a single red signal */
+  [data-palette="graphite"] { --nh: 240; --ns: 4%; --primary: 240 6% 12%; --target: 0 72% 50%; }
+  .dark[data-palette="graphite"] { --primary: 0 0% 96%; --target: 0 84% 66%; }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
