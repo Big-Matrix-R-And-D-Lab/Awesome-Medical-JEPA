@@ -36,6 +36,7 @@ export interface Area {
 
 export interface SiteData {
   repo: string
+  repoStars: number | null // star count of this list itself, fetched at build time
   updated: string
   papers: Paper[] // already in display order
   areas: Area[]

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
-import { ArrowRight, BookOpen, GitPullRequest, Plus, Quote } from "lucide-react"
+import { ArrowRight, BookOpen, GitPullRequest, Plus, Quote, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Explorer } from "@/components/Explorer"
 import { JepaFigure } from "@/components/JepaFigure"
 import { GitHubMark } from "@/components/Papers"
 import { ThemePicker } from "@/components/ThemePicker"
-import { loadSiteData, type SiteData } from "@/data"
+import { compact, loadSiteData, type SiteData } from "@/data"
+import { cn } from "@/lib/utils"
 
 function Logo() {
   return (
@@ -28,7 +30,55 @@ function Logo() {
   )
 }
 
-function Header({ repo }: { repo: string }) {
+// Websites cannot star a repository for the visitor (GitHub requires the visitor's own sign-in),
+// so the button opens the repository, where Star is one click away.
+function useLiveStars(repo: string, initial: number | null) {
+  const [stars, setStars] = useState(initial)
+  useEffect(() => setStars(initial), [initial])
+  useEffect(() => {
+    const m = repo.match(/github\.com\/([^/]+)\/([^/#?]+)/)
+    if (!m) return
+    fetch(`https://api.github.com/repos/${m[1]}/${m[2]}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => typeof d?.stargazers_count === "number" && setStars(d.stargazers_count))
+      .catch(() => {})
+  }, [repo])
+  return stars
+}
+
+function StarButton({ repo, stars, size = "sm", label = "Star" }: {
+  repo: string; stars: number | null; size?: "sm" | "lg"; label?: string
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <a
+          href={repo}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${label.includes("GitHub") ? label : `${label} on GitHub`}${stars !== null ? `, ${stars} stars` : ""}`}
+          className={cn(
+            "inline-flex items-stretch overflow-hidden rounded-md border bg-background font-medium shadow-sm transition-colors hover:border-primary/60",
+            size === "lg" ? "h-10 text-sm" : "h-8 text-xs",
+          )}
+        >
+          <span className={cn("flex items-center gap-1.5 hover:bg-accent", size === "lg" ? "px-4" : "px-2.5")}>
+            <Star className={cn("fill-target text-target", size === "lg" ? "size-4" : "size-3.5")} />
+            {label}
+          </span>
+          {stars !== null && (
+            <span className={cn("flex items-center border-l bg-muted/60 font-mono tabular-nums", size === "lg" ? "px-3" : "px-2")}>
+              {compact(stars)}
+            </span>
+          )}
+        </a>
+      </TooltipTrigger>
+      <TooltipContent>Opens the repository on GitHub, where Star is one click</TooltipContent>
+    </Tooltip>
+  )
+}
+
+function Header({ repo, stars }: { repo: string; stars: number | null }) {
   return (
     <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6">
@@ -42,12 +92,12 @@ function Header({ repo }: { repo: string }) {
           <Button asChild variant="ghost" size="sm"><a href="#contribute">Contribute</a></Button>
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <Button asChild variant="outline" size="sm" className="gap-2">
+          <Button asChild variant="ghost" size="icon" className="h-8 w-8" aria-label="GitHub repository">
             <a href={repo} target="_blank" rel="noreferrer">
               <GitHubMark />
-              <span className="hidden sm:inline">GitHub</span>
             </a>
           </Button>
+          <StarButton repo={repo} stars={stars} />
           <ThemePicker />
         </div>
       </div>
@@ -64,7 +114,7 @@ function Stat({ value, label }: { value: string | number; label: string }) {
   )
 }
 
-function Hero({ data }: { data: SiteData }) {
+function Hero({ data, stars }: { data: SiteData; stars: number | null }) {
   const years = data.papers.map((p) => p.year)
   const withCode = data.papers.filter((p) => p.code).length
   return (
@@ -93,7 +143,8 @@ function Hero({ data }: { data: SiteData }) {
               Browse papers <ArrowRight />
             </a>
           </Button>
-          <Button asChild size="lg" variant="outline" className="gap-2">
+          <StarButton repo={data.repo} stars={stars} size="lg" label="Star on GitHub" />
+          <Button asChild size="lg" variant="ghost" className="gap-2">
             <a href={`${data.repo}/issues/new?template=add-paper.yml`} target="_blank" rel="noreferrer">
               <Plus /> Suggest a paper
             </a>
@@ -220,15 +271,16 @@ export default function App() {
   }, [])
 
   const repo = data?.repo ?? "https://github.com/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA"
+  const stars = useLiveStars(repo, data?.repoStars ?? null)
   return (
     <>
-      <Header repo={repo} />
+      <Header repo={repo} stars={stars} />
       <main className="mx-auto max-w-7xl px-4 sm:px-6">
         {error && <p className="py-16 text-destructive">Could not load the paper list: {error}</p>}
         {!data && !error && <Loading />}
         {data && (
           <>
-            <Hero data={data} />
+            <Hero data={data} stars={stars} />
             <About />
             <div className="border-t pt-16">
               <Explorer papers={data.papers} areas={data.areas} />

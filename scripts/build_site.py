@@ -142,7 +142,8 @@ def site_data(rows: list[dict], stars: dict[str, int], updated: str) -> dict:
                 "project": r.get("project_link", ""),
                 "dataset": r.get("dataset_link", ""),
             })
-    return {"repo": REPO_URL, "updated": updated, "papers": papers, "areas": areas}
+    return {"repo": REPO_URL, "repoStars": stars.get(REPO_URL), "updated": updated,
+            "papers": papers, "areas": areas}
 
 
 def script_json(obj) -> str:
@@ -279,7 +280,7 @@ def main() -> int:
         return 1
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    stars = fetch_stars([r["code_link"] for r in rows if has_code(r)])
+    stars = fetch_stars([REPO_URL] + [r["code_link"] for r in rows if has_code(r)])
     data = site_data(rows, stars, today)
 
     OUT.mkdir(exist_ok=True)
