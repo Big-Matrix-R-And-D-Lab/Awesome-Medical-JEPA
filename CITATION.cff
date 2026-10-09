@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If this list helps your research, please cite it as below."
+type: dataset
+title: "Awesome Medical JEPA: A Curated List of Joint-Embedding Predictive Architectures in Medicine and Healthcare"
+abstract: >-
+  A curated, regularly updated list of papers and official code that use
+  Joint-Embedding Predictive Architectures (JEPA), including I-JEPA, V-JEPA and
+  LeJEPA, for self-supervised learning in medicine and healthcare: medical
+  imaging, physiological signals (ECG, EEG), surgical video, electronic health
+  records and molecular biology.
+authors:
+  - family-names: Khan
+    given-names: Misbah
+  - name: "Big Matrix R&D Lab"
+repository-code: "https://github.com/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA"
+url: "https://big-matrix-r-and-d-lab.github.io/Awesome-Medical-JEPA/"
+license: CC0-1.0
+keywords:
+  - JEPA
+  - medical JEPA
+  - joint-embedding predictive architecture
+  - I-JEPA
+  - V-JEPA
+  - LeJEPA
+  - self-supervised learning
+  - medical imaging
+  - foundation models
+  - healthcare AI
+  - awesome list
+date-released: "2026-10-09"

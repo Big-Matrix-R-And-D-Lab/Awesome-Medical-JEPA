@@ -4,7 +4,7 @@
 Usage:
     python scripts/build_site.py
 
-Writes site/index.html, site/sitemap.xml and site/robots.txt. The site/ folder is
+Writes site/index.html, site/sitemap.xml, site/robots.txt and the social preview image. The site/ folder is
 build output (git-ignored); the Pages workflow builds and deploys it on every push to main.
 Only the Python standard library is used.
 """
@@ -14,6 +14,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -241,6 +242,7 @@ def main() -> int:
 
     OUT.mkdir(exist_ok=True)
     (OUT / "index.html").write_text(render(rows), encoding="utf-8", newline="\n")
+    shutil.copyfile(ROOT / "assets" / "social-preview.png", OUT / "social-preview.png")
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
