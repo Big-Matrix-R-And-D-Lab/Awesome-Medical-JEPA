@@ -1,0 +1,48 @@
+name: Add a paper
+description: Suggest a JEPA paper in medicine or healthcare for the list
+title: "[Paper] "
+labels: ["new paper"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Paper title
+    validations:
+      required: true
+  - type: input
+    id: paper_link
+    attributes:
+      label: Paper link
+      description: Publisher page, DOI, arXiv or bioRxiv URL
+    validations:
+      required: true
+  - type: input
+    id: code_link
+    attributes:
+      label: Official code link (if any)
+      description: Only code released by the paper's authors
+  - type: input
+    id: venue
+    attributes:
+      label: Venue and year
+      placeholder: e.g. MICCAI 2026, or arXiv preprint 2026
+  - type: input
+    id: modality
+    attributes:
+      label: Data modality
+      placeholder: e.g. Chest X-ray, 12-lead ECG, Cardiac MRI video
+  - type: dropdown
+    id: inclusion_type
+    attributes:
+      label: How does it use JEPA?
+      options:
+        - Direct Medical JEPA (trains or adapts a JEPA objective on medical data)
+        - JEPA-inspired Medical (builds on JEPA ideas or benchmarks JEPA)
+        - Foundational JEPA (general-domain architecture or theory)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+      description: Task, JEPA variant, or why it belongs on the list

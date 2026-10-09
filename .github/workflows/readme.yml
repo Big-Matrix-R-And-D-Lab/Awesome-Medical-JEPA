@@ -1,0 +1,43 @@
+name: README
+
+on:
+  pull_request:
+    paths: ["data/**", "scripts/**", "README.md"]
+  push:
+    branches: [main]
+    paths: ["data/**", "scripts/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate CSV and check README is up to date
+        run: python scripts/build_readme.py --check
+
+  rebuild:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild README
+        run: python scripts/build_readme.py
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet README.md; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "docs: rebuild README from data/papers.csv"
+            git push
+          fi
