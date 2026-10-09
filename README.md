@@ -7,8 +7,8 @@
 # Awesome Medical JEPA
 
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
-[![Papers](https://img.shields.io/badge/papers-56-0d9488?style=flat-square)](#contents)
-[![Official code](https://img.shields.io/badge/official%20code-22-2ea44f?style=flat-square&logo=github)](#how-to-read-this-list)
+[![Papers](https://img.shields.io/badge/papers-57-0d9488?style=flat-square)](#contents)
+[![Official code](https://img.shields.io/badge/official%20code-23-2ea44f?style=flat-square&logo=github)](#how-to-read-this-list)
 [![Last commit](https://img.shields.io/github/last-commit/Big-Matrix-R-And-D-Lab/Awesome-Medical-JEPA?style=flat-square&label=updated&color=6e40c9)](../../commits/main)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](CONTRIBUTING.md)
 [![License: CC0-1.0](https://img.shields.io/badge/license-CC0--1.0-64748b?style=flat-square)](LICENSE)
@@ -46,12 +46,12 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 
 ## At a glance
 
-**56** papers &nbsp;·&nbsp; **22** with official code &nbsp;·&nbsp; **6** research areas
+**57** papers &nbsp;·&nbsp; **23** with official code &nbsp;·&nbsp; **6** research areas
 
 | Year | Papers | |
 | :-- | --: | :-- |
 | 2023 | 1 | █ |
-| 2024 | 5 | ███ |
+| 2024 | 6 | ███ |
 | 2025 | 7 | ████ |
 | 2026 | 43 | ████████████████████████ |
 
@@ -62,7 +62,7 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 | 🧱 | **[Foundations](#-foundations)** | 5 | [Architectures](#architectures)&nbsp;<sub>3</sub> · [Theory & Objectives](#theory--objectives)&nbsp;<sub>2</sub> |
 | 🩻 | **[Medical Imaging](#-medical-imaging)** | 21 | [Radiology](#radiology)&nbsp;<sub>5</sub> · [Neuroimaging](#neuroimaging)&nbsp;<sub>8</sub> · [Cardiac Imaging](#cardiac-imaging)&nbsp;<sub>2</sub> · [Ultrasound](#ultrasound)&nbsp;<sub>3</sub> · [Computational Pathology](#computational-pathology)&nbsp;<sub>1</sub> · [Multi-modality Imaging](#multi-modality-imaging)&nbsp;<sub>2</sub> |
 | 🎥 | **[Surgical Video](#-surgical-video)** | 2 | — |
-| 💓 | **[Physiological Signals](#-physiological-signals)** | 17 | [ECG](#ecg)&nbsp;<sub>4</sub> · [EEG](#eeg)&nbsp;<sub>6</sub> · [Multimodal & ICU Monitoring](#multimodal--icu-monitoring)&nbsp;<sub>7</sub> |
+| 💓 | **[Physiological Signals](#-physiological-signals)** | 18 | [ECG](#ecg)&nbsp;<sub>4</sub> · [EEG](#eeg)&nbsp;<sub>7</sub> · [Multimodal & ICU Monitoring](#multimodal--icu-monitoring)&nbsp;<sub>7</sub> |
 | 📋 | **[EHR & Clinical Trajectories](#-ehr--clinical-trajectories)** | 2 | — |
 | 🧬 | **[Molecular & Single-Cell Biology](#-molecular--single-cell-biology)** | 9 | [Single-Cell Transcriptomics](#single-cell-transcriptomics)&nbsp;<sub>3</sub> · [Spatial Omics](#spatial-omics)&nbsp;<sub>4</sub> · [Genomics & Proteins](#genomics--proteins)&nbsp;<sub>2</sub> |
 
@@ -184,6 +184,7 @@ The original formulations are I-JEPA for images and V-JEPA for video; they are l
 | **Multimodal EEG World Model** 🔸 | [Multimodal EEG World Model: Self-Supervised Latent Transition Learning for Wearable EEG Seizure Detection](https://www.medrxiv.org/content/10.64898/2026.07.20.26358450v1)<br><sub><code>EEG, ECG, EMG and movement signals</code> Predict next-segment EEG latent conditioned on synchronized ECG/EMG/movement representations; downstream seizure detection</sub> | medRxiv<br><sub>2026</sub> | — |
 | **STST‑JEPA** | [STST-JEPA: Shallow-Target Spatio-Temporal Joint Embedding Prediction Architecture for EEG Self-Supervised Learning](https://arxiv.org/abs/2607.06629)<br><sub><code>EEG</code> Self-supervised EEG representation learning</sub> | arXiv<br><sub>2026</sub> | — |
 | **EEG‑VJEPA** | [From Video to EEG: Adapting Joint Embedding Predictive Architecture to Uncover Spatiotemporal Dynamics in Brain Signal Analysis](https://arxiv.org/abs/2507.03633)<br><sub><code>Multichannel EEG</code> EEG classification and interpretable spatiotemporal representations</sub> | arXiv<br><sub>2025</sub> | — |
+| **S‑JEPA** | [S-JEPA: towards seamless cross-dataset transfer through dynamic spatial attention](https://doi.org/10.3217/978-3-99161-014-4-003)<br><sub><code>EEG</code> Cross-dataset transfer for BCI decoding: motor imagery, ERP and SSVEP</sub> | Graz BCI<br><sub>2024</sub> | [![GitHub stars](https://img.shields.io/github/stars/braindecode/braindecode?style=flat-square&logo=github&label=&color=24292f)](https://github.com/braindecode/braindecode/blob/master/braindecode/models/signal_jepa.py) |
 
 <p align="right"><a href="#contents"><sub>↑ back to top</sub></a></p>
 
